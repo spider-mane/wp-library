@@ -1,0 +1,60 @@
+.sortable--container {
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    margin: .25em 1em;
+    list-style: none;
+
+
+    //li
+    .sortable--item-container {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        padding: 0;
+        margin: 0;
+
+        &:nth-child(1n)>.sortable--item {
+            background-color: rgb(219, 215, 215);
+            border: 1px solid rgba(219, 215, 215, .95);
+        }
+
+        &:nth-child(2n +1)>.sortable--item {
+            background-color: rgb(182, 179, 179);
+            border: 1px solid rgba(182, 179, 179, .95);
+        }
+
+
+        //div
+        .sortable--item {
+            display: flex;
+            align-items: center;
+            height: 3.5em;
+            margin: 0;
+            padding: 0 1em 0 2em;
+            margin: .25em 0;
+
+            .object-title {
+                margin-right: auto;
+            }
+
+            .input-container {
+                display: flex;
+                align-items: end;
+            }
+        }
+    }
+
+
+    // ul
+    .sortable--group {
+        margin: 0 1.75em 0 2em; //
+        padding: 0;
+    }
+
+    .placeholder {
+        height: 3.5em;
+        border: black solid 1px;
+        background-color: aliceblue;
+    }
+}

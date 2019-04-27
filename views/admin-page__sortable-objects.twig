@@ -1,0 +1,16 @@
+<div class="wrap">
+    <h1>{{ title }}</h1>
+    <div class="clear"></div>
+
+    <div id="form-container">
+        <form action="" method="post">
+            <div class="">
+                <ul class="apex sortable sortable--container">
+                    {{ sorted_sortables }}
+                </ul>
+            </div>
+            {{ wp_submit_button('Update Order', 'primary large', 'update_display_order', false) }}
+        </form>
+    </div>
+
+</div>

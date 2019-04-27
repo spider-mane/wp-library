@@ -1,0 +1,54 @@
+.sortable--container {
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+  margin: .25em 1em;
+  list-style: none;
+}
+
+.sortable--container .sortable--item-container {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+.sortable--container .sortable--item-container:nth-child(1n) > .sortable--item {
+  background-color: #dbd7d7;
+  border: 1px solid rgba(219, 215, 215, 0.95);
+}
+
+.sortable--container .sortable--item-container:nth-child(2n +1) > .sortable--item {
+  background-color: #b6b3b3;
+  border: 1px solid rgba(182, 179, 179, 0.95);
+}
+
+.sortable--container .sortable--item-container .sortable--item {
+  display: flex;
+  align-items: center;
+  height: 3.5em;
+  margin: 0;
+  padding: 0 1em 0 2em;
+  margin: .25em 0;
+}
+
+.sortable--container .sortable--item-container .sortable--item .object-title {
+  margin-right: auto;
+}
+
+.sortable--container .sortable--item-container .sortable--item .input-container {
+  display: flex;
+  align-items: end;
+}
+
+.sortable--container .sortable--group {
+  margin: 0 1.75em 0 2em;
+  padding: 0;
+}
+
+.sortable--container .placeholder {
+  height: 3.5em;
+  border: black solid 1px;
+  background-color: aliceblue;
+}
