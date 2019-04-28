@@ -1,8 +1,10 @@
 <?php
 
 /**
- * 
+ * @package Backalley-Starter
  */
+
+use Backalley\Guctility_Belt;
 
 abstract class Sortable_Objects_Base
 {

@@ -1,7 +1,7 @@
 {
   "name": "Backalley Starter",
 
-  "description": "something or whatever man",
+  "description": "Wordpress Admin Features Library",
 
   "authors": [{
     "name": "Chris Williams",
@@ -19,7 +19,7 @@
 
   "autoload": {
     "psr-4": {
-      "Backalley_Starter\\": "inc/"
+      "Backalley_Starter\\": "includes/"
     }
   }
 }

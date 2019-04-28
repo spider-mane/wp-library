@@ -5,6 +5,9 @@
  */
 
 use Timber\Timber;
+use Backalley\Html\Select_Options;
+use Backalley\Backalley;
+use Backalley\Backalley_Conceptual_Post_Type;
 
 class Backalley_Location extends Backalley_Conceptual_Post_Type
 {
@@ -39,7 +42,7 @@ class Backalley_Location extends Backalley_Conceptual_Post_Type
             'city' => [],
             'state' => [
                 'form_element' => 'select',
-                'options' => array_merge(['' => 'Select State'], backalley_us_states()),
+                'options' => array_merge(['' => 'Select State'], Select_Options::us_states()),
                 'selected' => get_post_meta($post_id, $prefix . "{$post->post_type}_address__state", true)
             ],
             'zip' => [],

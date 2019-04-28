@@ -1,10 +1,10 @@
 <?php
 
 /**
- *
+ * @package Backalley-Starter
  */
 
-// use Timber\Timber;
+use Backalley\Backalley;
 
 class Backalley_Restaurant_Location extends Backalley_Location
 {

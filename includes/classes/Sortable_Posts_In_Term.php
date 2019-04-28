@@ -1,8 +1,10 @@
 <?php
 
 /**
- *
+ * @package Backalley-Starter
  */
+
+use Backalley\Backalley;
 use Timber\Timber;
 use Timber\Helper;
 use Timber\Twig_Function;

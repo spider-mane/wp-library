@@ -1,8 +1,11 @@
 <?php
 
 /**
- * 
+ * @package Backalley-Starter
  */
+
+use Backalley\Backalley;
+use Backalley\Backalley_Conceptual_Post_Type;
 
 class Backalley_Press_Review extends Backalley_Conceptual_Post_Type
 {
