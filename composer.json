@@ -10,6 +10,7 @@
 
   "require": {
     "php": ">=7.0.0",
+    "backalley/backalley-core": "dev-master",
     "php-console/php-console": "^3.1",
     "composer/installers": "v1.0.12",
     "timber/timber": "^1.9",
@@ -17,7 +18,10 @@
     "myclabs/deep-copy": "^1.8"
   },
 
-  "minimum-stability": "stable",
+  "repositories": [{
+    "type": "vcs",
+    "url": "git@github.com:spider-mane/backalley-core"
+  }],
 
   "autoload": {
     "psr-4": {
