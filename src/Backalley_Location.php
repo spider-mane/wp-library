@@ -1,13 +1,13 @@
 <?php
 
 /**
- *
+ * @package Backalley-Starter
  */
+
+namespace Backalley;
 
 use Timber\Timber;
 use Backalley\Html\Select_Options;
-use Backalley\Backalley;
-use Backalley\Backalley_Conceptual_Post_Type;
 
 class Backalley_Location extends Backalley_Conceptual_Post_Type
 {
@@ -202,7 +202,7 @@ class Backalley_Location extends Backalley_Conceptual_Post_Type
         }
 
         if ($updated === true) {
-            $complete_address = backalley_concat_address(
+            $complete_address = Guctility_Belt::concat_address(
                 $sanitized_data['street'],
                 $sanitized_data['city'],
                 $sanitized_data['state'],
@@ -212,7 +212,7 @@ class Backalley_Location extends Backalley_Conceptual_Post_Type
             update_post_meta($post_id, $prefix . "{$post_type}_address__complete", $complete_address);
 
             if (isset(Backalley::$api_keys['google_maps'])) {
-                $coordinates = backalley_request_google_geocode($complete_address, Backalley::$api_keys['google_maps']);
+                $coordinates = Guctility_Belt::google_geocode($complete_address, Backalley::$api_keys['google_maps']);
 
                 update_post_meta($post_id, "{$post_type}_address__geo", $coordinates);
             }

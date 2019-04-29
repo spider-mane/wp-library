@@ -4,7 +4,7 @@
  * @package Backalley-Starter
  */
 
-use Backalley\Backalley;
+namespace Backalley;
 
 class Backalley_Restaurant_Location extends Backalley_Location
 {

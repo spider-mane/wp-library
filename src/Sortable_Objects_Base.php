@@ -4,7 +4,7 @@
  * @package Backalley-Starter
  */
 
-use Backalley\Guctility_Belt;
+namespace Backalley;
 
 abstract class Sortable_Objects_Base
 {

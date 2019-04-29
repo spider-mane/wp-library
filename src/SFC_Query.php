@@ -10,9 +10,12 @@
  * foreach loop rather than querying for posts in each iteration
  * 
  */
+
+namespace Backalley;
+
 use function DeepCopy\deep_copy;
 
-class SFC_Query extends WP_Query
+class SFC_Query extends \WP_Query
 {
     public function __construct($term_id, $taxonomy, $query = null, $meta_key = null, $field = null)
     {

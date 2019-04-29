@@ -4,8 +4,7 @@
  * @package Backalley-Starter
  */
 
-use Backalley\Backalley;
-use Backalley\Backalley_Conceptual_Post_Type;
+namespace Backalley;
 
 class Backalley_Menu_Item extends Backalley_Conceptual_Post_Type
 {

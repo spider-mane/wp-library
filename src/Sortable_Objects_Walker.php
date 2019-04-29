@@ -1,10 +1,12 @@
 <?php
 
 /**
- * @package Backalley
+ * @package Backalley-Starter
  */
 
-class Sortable_Objects_Walker extends Walker
+namespace Backalley;
+
+class Sortable_Objects_Walker extends \Walker
 {
     public $db_fields = ['parent' => '', 'id' => '', 'title' => ''];
 
@@ -62,15 +64,15 @@ class Sortable_Objects_Walker extends Walker
         // var_dump($object);
         $indent = !empty($depth) ? str_repeat("\t", $depth) : '';
 
-        
+
         $parent_field = $this->db_fields['parent'];
         $id_field = $this->db_fields['id'];
         $title_field = $this->db_fields['title'];
-        
+
         $object_id = $object->{$id_field};
 
-        $apex_display_position = (int) get_metadata($this->tree_type, $object_id, $args['apex_meta_key'], true);
-        $hierarchy_display_position = (int) get_metadata($this->tree_type, $object_id, $args['hierarchy_meta_key'], true);
+        $apex_display_position = (int)get_metadata($this->tree_type, $object_id, $args['apex_meta_key'], true);
+        $hierarchy_display_position = (int)get_metadata($this->tree_type, $object_id, $args['hierarchy_meta_key'], true);
 
         // input values
         // $common_input_classes = 'order-input small 0hide-if-js';
@@ -116,11 +118,11 @@ class Sortable_Objects_Walker extends Walker
         if (empty($object->{$parent_field})) {
             $output .= "<input type='number' name='{$apex_input_name}' id='' class='{$apex_input_classes}' value={$apex_display_position} min={$min} max={$apex_max}>\n";
         }
-        
+
         if (!empty($object->{$parent_field})) {
             $output .= "<input type='number' name='{$hierarchy_input_name}' id='' class='{$hierarchy_input_classes}' value={$hierarchy_display_position} min={$min} max={$hierarchy_max}>\n";
         }
-        
+
         $output .= "</span>\n";
         $output .= "</div>\n";
     }

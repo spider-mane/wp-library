@@ -1,5 +1,5 @@
 {
-  "name": "Backalley Starter",
+  "name": "backalley/backalley-starter",
 
   "description": "Wordpress Admin Features Library",
 
@@ -19,7 +19,7 @@
 
   "autoload": {
     "psr-4": {
-      "Backalley_Starter\\": "includes/"
+      "Backalley\\": "src/"
     }
   }
 }
