@@ -17,6 +17,8 @@
     "myclabs/deep-copy": "^1.8"
   },
 
+  "minimum-stability": "stable",
+
   "autoload": {
     "psr-4": {
       "Backalley\\": "src/"
