@@ -101,12 +101,12 @@ class Backalley_Location extends Backalley_Conceptual_Post_Type
         $fields = [
             'phone' => [
                 'attributes' => [
-                    'type' => 'phone'
+                    'type' => 'tel'
                 ]
             ],
             'fax' => [
                 'attributes' => [
-                    'type' => 'phone'
+                    'type' => 'tel'
                 ]
             ],
             'email' => [
