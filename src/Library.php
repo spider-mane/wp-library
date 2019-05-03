@@ -31,7 +31,7 @@ class Library extends \Backalley_Library_Base
         Self::super_set();
 
         add_action('admin_menu', function () {
-            Sortable_Taxonomy::register_admin_page();
+            SortableTaxonomy::register_admin_page();
             Sortable_Posts_In_Term::register_admin_page();
         });
     }
@@ -88,6 +88,18 @@ class Library extends \Backalley_Library_Base
 
                 $conceptual_post_type::$super_set(...$set_args);
             }
+        }
+    }
+
+    /**
+     * 
+     */
+    public static function alias_classes()
+    {
+        $aliases = [];
+
+        foreach ($aliases as $class => $alias) {
+            class_alias($class, $alias);
         }
     }
 }

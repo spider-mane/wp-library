@@ -12,7 +12,7 @@ use Timber\Twig_Function;
 
 use function DeepCopy\deep_copy;
 
-class Sortable_Taxonomy extends Sortable_Objects_Base
+class SortableTaxonomy extends Sortable_Objects_Base
 {
     public $taxonomy;
     public $submenu_args;
@@ -25,38 +25,13 @@ class Sortable_Taxonomy extends Sortable_Objects_Base
 
     public function __construct($taxonomy, $post_type, $ui_args)
     {
-        // set properties from $ui_args
-        $this->submenu_args = $ui_args['submenu_page'] ?? null;
-        // $this->action_args = $ui_args['term_row_action'] ?? null;
-
-        // setter methods
         $this->set_taxonomy($taxonomy);
         $this->set_post_type($post_type);
         $this->set_terms();
+        $this->set_ui_args($ui_args);
+        $this->add_admin_page();
 
-        // static properties
-
-
-        //register callback to sort queries according to order values
         add_action("get_terms", [$this, 'order_terms_query'], null, 4);
-        // add_action("the_posts", [$this, 'order_objects_query'], null, 2);
-        
-        // add_action("admin_notices", $this->admin_notices());
-
-        if (isset($ui_args) && $ui_args !== false) {
-
-            // create admin subpage
-            if ((!empty($this->submenu_args) && $this->submenu_args !== false)) {
-                add_action('admin_menu', [$this, 'add_submenu_page']);
-                add_filter('admin_title', [$this, 'fix_subpage_title'], null, 2);
-                add_filter('submenu_file', [$this, 'fix_submenu_file'], null, 2);
-            }
-
-            // add row action to edit-tags.php
-            // if (isset($ui_args['term_row_action']) && $ui_args['term_row_action'] !== false) {
-            //     add_filter("{$this->taxonomy->name}_row_actions", [$this, 'add_row_action'], null, 2);
-            // }
-        }
     }
 
     /**
@@ -64,7 +39,9 @@ class Sortable_Taxonomy extends Sortable_Objects_Base
      */
     public function set_taxonomy($taxonomy)
     {
-        $this->taxonomy = get_taxonomy($taxonomy);
+        $this->taxonomy = is_object($taxonomy) ? $taxonomy : get_taxonomy($taxonomy);
+
+        return $this;
     }
 
     /**
@@ -72,7 +49,9 @@ class Sortable_Taxonomy extends Sortable_Objects_Base
      */
     public function set_post_type($post_type)
     {
-        $this->post_type = get_post_type_object($post_type);
+        $this->post_type = is_object($post_type) ? $post_type : get_post_type_object($post_type);
+
+        return $this;
     }
 
     /**
@@ -80,18 +59,42 @@ class Sortable_Taxonomy extends Sortable_Objects_Base
      */
     public function set_terms()
     {
-        $terms = [
+        $terms = get_terms([
             'taxonomy' => $this->taxonomy->name,
             'hide_empty' => false
-        ];
-
-        $terms = get_terms($terms);
+        ]);
 
         foreach ($terms as $term) {
             $this->terms[$term->slug] = $term;
         }
 
         ksort($this->terms);
+
+        return $this;
+    }
+
+    /**
+     * 
+     */
+    public function set_ui_args($ui_args)
+    {
+        $this->submenu_args = $ui_args['submenu_page'] ?? null;
+
+        return $this;
+    }
+
+    /**
+     * 
+     */
+    public function add_admin_page()
+    {
+        if (!empty($this->submenu_args) && $this->submenu_args !== false) {
+            add_action('admin_menu', [$this, 'add_submenu_page']);
+            add_filter('admin_title', [$this, 'fix_subpage_title'], null, 2);
+            add_filter('submenu_file', [$this, 'fix_submenu_file'], null, 2);
+        }
+
+        return $this;
     }
 
     /**
