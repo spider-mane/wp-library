@@ -6,7 +6,7 @@
 
 namespace Backalley;
 
-class Backalley_Menu_Item extends Backalley_Conceptual_Post_Type
+class BackalleyMenuItem extends BackalleyConceptualPostType
 {
     public static $id_prefix = "backalley--menu-item--";
     public static $name_prefix = "backalley_menu_item_data";

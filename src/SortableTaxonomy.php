@@ -12,7 +12,7 @@ use Timber\Twig_Function;
 
 use function DeepCopy\deep_copy;
 
-class SortableTaxonomy extends Sortable_Objects_Base
+class SortableTaxonomy extends SortableObjectsBase
 {
     public $taxonomy;
     public $submenu_args;
@@ -245,7 +245,7 @@ class SortableTaxonomy extends Sortable_Objects_Base
         ];
 
         $terms = get_terms($terms);
-        $terms_walker = new Sortable_Objects_Walker;
+        $terms_walker = new SortableObjectsWalker;
         $terms_walker->set_object_type('term');
 
 

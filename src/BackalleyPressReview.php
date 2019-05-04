@@ -6,7 +6,7 @@
 
 namespace Backalley;
 
-class Backalley_Press_Review extends Backalley_Conceptual_Post_Type
+class BackalleyPressReview extends BackalleyConceptualPostType
 {
     public static $query_var = "backalley_press_review_data";
     public static $id_prefix = 'backelley--press-review--';

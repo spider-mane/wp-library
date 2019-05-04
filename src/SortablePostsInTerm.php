@@ -11,7 +11,7 @@ use Timber\Helper;
 use Timber\Twig_Function;
 use function DeepCopy\deep_copy;
 
-class Sortable_Posts_In_Term extends Sortable_Objects_Base
+class SortablePostsInTerm extends SortableObjectsBase
 {
     public $terms;
     public $taxonomy;
@@ -310,7 +310,7 @@ class Sortable_Posts_In_Term extends Sortable_Objects_Base
         ];
 
         $posts = get_posts($posts);
-        $posts_walker = new Sortable_Objects_Walker;
+        $posts_walker = new SortableObjectsWalker;
         $posts_walker->set_object_type('post');
 
            
@@ -344,6 +344,6 @@ class Sortable_Posts_In_Term extends Sortable_Objects_Base
      */
     public static function get_sorted_filtered_cloned_query($term_id, $taxonomy, $query = null)
     {
-        return new SFC_Query($term_id, $taxonomy, $query);
+        return new SortedFilteredClonedQuery($term_id, $taxonomy, $query);
     }
 }

@@ -6,7 +6,7 @@
 
 namespace Backalley;
 
-class Backalley_Restaurant_Location extends Backalley_Location
+class BackalleyRestaurantLocation extends BackalleyLocation
 {
     public static $menu_item_relationship;
     public static $delivery_platforms;

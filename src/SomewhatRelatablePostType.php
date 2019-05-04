@@ -19,7 +19,7 @@
 
 namespace Backalley;
 
-class Somewhat_Relatable_Post_Type
+class SomewhatRelatablePostType
 {
     public $shadow_taxonomy;
     public $shadowed_post_type;
@@ -224,7 +224,7 @@ class Somewhat_Relatable_Post_Type
             }
 
             // Update the term meta regardless of circumstances
-            $term_meta = Guctility_Belt::json_encode([
+            $term_meta = GuctilityBelt::json_encode([
                 'shadow_term_of_post_of_type' => $post->post_type,
                 'post_status' => $post_status,
             ]);

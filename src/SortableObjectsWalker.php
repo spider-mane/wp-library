@@ -6,7 +6,7 @@
 
 namespace Backalley;
 
-class Sortable_Objects_Walker extends \Walker
+class SortableObjectsWalker extends \Walker
 {
     public $db_fields = ['parent' => '', 'id' => '', 'title' => ''];
 

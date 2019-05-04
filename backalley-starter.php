@@ -5,7 +5,7 @@
  */
 
 
-class Backalley_Library_Base
+class BackalleyLibraryBase
 {
     public static $url;
     public static $path;

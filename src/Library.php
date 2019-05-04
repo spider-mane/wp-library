@@ -12,7 +12,7 @@ use Twig_Extension_StringLoader;
 
 use function DeepCopy\deep_copy;
 
-class Library extends \Backalley_Library_Base
+class Library extends \BackalleyLibraryBase
 {
     public static $args;
 
@@ -28,11 +28,12 @@ class Library extends \Backalley_Library_Base
         add_action('admin_enqueue_scripts', [__class__, 'enqueue']);
         add_filter('timber/twig', [__class__, 'config_twig']);
 
+        Self::alias_classes();
         Self::super_set();
 
         add_action('admin_menu', function () {
             SortableTaxonomy::register_admin_page();
-            Sortable_Posts_In_Term::register_admin_page();
+            SortablePostsInTerm::register_admin_page();
         });
     }
 
@@ -96,7 +97,9 @@ class Library extends \Backalley_Library_Base
      */
     public static function alias_classes()
     {
-        $aliases = [];
+        $aliases = [
+            "Backalley\\SortedFilteredClonedQuery" => "SFC_Query"
+        ];
 
         foreach ($aliases as $class => $alias) {
             class_alias($class, $alias);

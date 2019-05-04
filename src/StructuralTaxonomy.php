@@ -43,7 +43,7 @@ class StructuralTaxonomy
      */
     public function init_option()
     {
-        new WP\Term_Option([
+        new WP\TermCustomField([
             'taxonomy' => $this->taxonomy,
             'display' => [$this, 'term_form_field'],
             'save' => [$this, 'update_term_roles']

@@ -7,9 +7,9 @@
 namespace Backalley;
 
 use Timber\Timber;
-use Backalley\Html\Select_Options;
+use Backalley\Html\SelectOptions;
 
-class Backalley_Location extends Backalley_Conceptual_Post_Type
+class BackalleyLocation extends BackalleyConceptualPostType
 {
     public static $id_prefix = "backalley--location_data--";
     public static $name_prefix = "backalley_location_data";
@@ -42,7 +42,7 @@ class Backalley_Location extends Backalley_Conceptual_Post_Type
             'city' => [],
             'state' => [
                 'form_element' => 'select',
-                'options' => array_merge(['' => 'Select State'], Select_Options::us_states()),
+                'options' => array_merge(['' => 'Select State'], SelectOptions::us_states()),
                 'selected' => get_post_meta($post_id, $prefix . "{$post->post_type}_address__state", true)
             ],
             'zip' => [],
@@ -202,7 +202,7 @@ class Backalley_Location extends Backalley_Conceptual_Post_Type
         }
 
         if ($updated === true) {
-            $complete_address = Guctility_Belt::concat_address(
+            $complete_address = GuctilityBelt::concat_address(
                 $sanitized_data['street'],
                 $sanitized_data['city'],
                 $sanitized_data['state'],
@@ -212,7 +212,7 @@ class Backalley_Location extends Backalley_Conceptual_Post_Type
             update_post_meta($post_id, $prefix . "{$post_type}_address__complete", $complete_address);
 
             if (isset(Backalley::$api_keys['google_maps'])) {
-                $coordinates = Guctility_Belt::google_geocode($complete_address, Backalley::$api_keys['google_maps']);
+                $coordinates = GuctilityBelt::google_geocode($complete_address, Backalley::$api_keys['google_maps']);
 
                 update_post_meta($post_id, "{$post_type}_address__geo", $coordinates);
             }

@@ -15,7 +15,7 @@ namespace Backalley;
 
 use function DeepCopy\deep_copy;
 
-class SFC_Query extends \WP_Query
+class SortedFilteredClonedQuery extends \WP_Query
 {
     public function __construct($term_id, $taxonomy, $query = null, $meta_key = null, $field = null)
     {
@@ -54,7 +54,7 @@ class SFC_Query extends \WP_Query
         // die;
 
         // $sorted_posts = Guctility_Belt::sort_objects_array($filtered_posts, $post_positions, 'ID');
-        $sorted_posts = Sortable_Objects_Base::order_objects_array($filtered_posts, 'post', $orderby_apex, $orderby_hierarchy);
+        $sorted_posts = SortableObjectsBase::order_objects_array($filtered_posts, 'post', $orderby_apex, $orderby_hierarchy);
 
         $this->post = $sorted_posts[0] ?? null;
         $this->posts = $sorted_posts;
