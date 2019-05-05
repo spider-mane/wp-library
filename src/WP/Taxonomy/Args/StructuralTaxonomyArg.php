@@ -11,4 +11,9 @@ class StructuralTaxonomyArg implements CustomTaxonomyArgInterface
     {
         return new StructuralTaxonomy($taxonomy, $args);
     }
+
+    public static function run()
+    {
+        return;
+    }
 }

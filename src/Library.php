@@ -98,7 +98,9 @@ class Library extends \BackalleyLibraryBase
     public static function alias_classes()
     {
         $aliases = [
-            "Backalley\\SortedFilteredClonedQuery" => "SFC_Query"
+            "Backalley\\SortedFilteredClonedQuery" => "SFC_Query",
+            "Backalley\\BackalleyRestaurantLocation" => "BackalleyRestaurantLocation",
+            "Backalley\\BackalleyMenuItem" => "BackalleyMenuItem",
         ];
 
         foreach ($aliases as $class => $alias) {
