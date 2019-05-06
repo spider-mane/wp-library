@@ -232,21 +232,21 @@ class BackalleyLocation extends BackalleyConceptualPostType
                 'filter' => 'text_field',
                 'type' => 'post_meta',
                 'item' => $post_id,
-                'save' => "{$post->post_type}_contact_info__phone"
+                'save' => $prefix . "{$post->post_type}_contact_info__phone"
             ],
             'fax' => [
                 'check' => 'phone',
                 'filter' => 'text_field',
                 'type' => 'post_meta',
                 'item' => $post_id,
-                'save' => "{$post->post_type}_contact_info__fax"
+                'save' => $prefix . "{$post->post_type}_contact_info__fax"
             ],
             'email' => [
                 'check' => 'email',
                 'filter' => 'email',
                 'type' => 'post_meta',
                 'item' => $post_id,
-                'save' => "{$post->post_type}_contact_info__email"
+                'save' => $prefix . "{$post->post_type}_contact_info__email"
             ],
         ];
 
