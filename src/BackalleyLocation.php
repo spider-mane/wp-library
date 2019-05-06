@@ -226,35 +226,31 @@ class BackalleyLocation extends BackalleyConceptualPostType
     {
         $prefix = BackAlley::$meta_key_prefix;
 
-        $sanitized_data = [
+        $instructions = [
             'phone' => [
-                'filter' => FILTER_CALLBACK,
-                'options' => 'sanitize_text_field'
+                'check' => 'phone',
+                'filter' => 'text_field',
+                'type' => 'post_meta',
+                'item' => $post_id,
+                'save' => "{$post->post_type}_contact_info__phone"
             ],
             'fax' => [
-                'filter' => FILTER_CALLBACK,
-                'options' => 'sanitize_text_field'
+                'check' => 'phone',
+                'filter' => 'text_field',
+                'type' => 'post_meta',
+                'item' => $post_id,
+                'save' => "{$post->post_type}_contact_info__fax"
             ],
             'email' => [
-                'filter' => FILTER_CALLBACK,
-                'options' => 'sanitize_email'
+                'check' => 'email',
+                'filter' => 'email',
+                'type' => 'post_meta',
+                'item' => $post_id,
+                'save' => "{$post->post_type}_contact_info__email"
             ],
         ];
 
-        foreach ($sanitized_data as $field => &$args) {
-            $args['options'] = apply_filters("backalley/sanitize/location/{$field}", $args['options']);
-        }
-
-        $sanitized_data = filter_var_array($raw_data, $sanitized_data);
-
-        foreach ($sanitized_data as $field => $new_data) {
-            $meta_key = $prefix . "{$post->post_type}_contact_info__{$field}";
-            $old_data = get_post_meta($post_id, $meta_key, true);
-
-            if ($old_data !== $new_data) {
-                update_post_meta($post_id, $meta_key, $new_data);
-            }
-        }
+        $results = Saveyour::judge($instructions, $raw_data);
     }
 
     /**
