@@ -1,14 +1,14 @@
 <?php
 
-/**
- * @package Backalley-Starter
- */
-
 namespace Backalley;
 
 use Timber\Timber;
 use Backalley\Html\SelectOptions;
+use Backalley\DataFields\AddressFieldSet;
 
+/**
+ * @package Backalley-Starter
+ */
 class BackalleyLocation extends BackalleyConceptualPostType
 {
     public static $id_prefix = "backalley--location_data--";
@@ -34,61 +34,7 @@ class BackalleyLocation extends BackalleyConceptualPostType
      */
     public static function render_address_fieldset($post)
     {
-        $post_id = $post->ID;
-        $prefix = BackAlley::$meta_key_prefix;
-
-        $fields = [
-            'street' => [],
-            'city' => [],
-            'state' => [
-                'form_element' => 'select',
-                'options' => array_merge(['' => 'Select State'], SelectOptions::us_states()),
-                'selected' => get_post_meta($post_id, $prefix . "{$post->post_type}_address__state", true)
-            ],
-            'zip' => [],
-            'complete' => [
-                'attributes' => [
-                    'disabled' => true
-                ]
-            ],
-            'geo' => [
-                'attributes' => [
-                    'disabled' => true
-                ]
-            ],
-        ];
-
-        foreach ($fields as $field => &$definition) {
-            $definition['title'] = ucwords(str_replace('_', ' ', $field));
-
-            // add attributes array if not there
-            if (!array_key_exists('attributes', $definition)) {
-                $definition['attributes'] = [];
-            }
-            $attributes = &$definition['attributes'];
-
-            if ($field !== 'state') {
-                $definition['form_element'] = 'input';
-                $attributes['type'] = 'text';
-                $attributes['value'] = get_post_meta($post_id, $prefix . "{$post->post_type}_address__{$field}", true) ?? '';
-            }
-
-            $attributes['name'] = "backalley_location_data[address][$field]";
-            $attributes['id'] = "backalley--location_data--{$field}";
-            $attributes['class'] = 'regular-text';
-
-            // make json stored data presentable
-            if ($field === 'geo' && !empty($attributes['value'])) {
-                $attributes['value'] = htmlspecialchars($attributes['value']);
-            }
-        }
-
-        $fieldset = [
-            'fieldset_title' => 'Address',
-            'fields' => $fields
-        ];
-
-        Self::generate_fieldset($fieldset, 3);
+        AddressFieldSet::render($post);
     }
 
     /**
@@ -173,50 +119,7 @@ class BackalleyLocation extends BackalleyConceptualPostType
      */
     public static function save_address($post_id, $post, $update, $fieldset = null, $raw_data = null)
     {
-        $post_type = $post->post_type;
-        $prefix = BackAlley::$meta_key_prefix;
-
-        $updated = false;
-
-        $expected_data = apply_filters('backalley/location/save/address/whitelist', [
-            'street',
-            'city',
-            'state',
-            'zip'
-        ]);
-
-        foreach ($expected_data as $field) {
-            $meta_key = $prefix . "{$post_type}_address__{$field}";
-
-            $old_data = get_post_meta($post_id, $meta_key, true);
-            $sanitized_data[$field] = sanitize_text_field($raw_data[$field]);
-
-
-            if ($old_data !== $sanitized_data[$field]) {
-                if ($updated === false) {
-                    $updated = true;
-                }
-
-                update_post_meta($post_id, $meta_key, $sanitized_data[$field], $old_data);
-            }
-        }
-
-        if ($updated === true) {
-            $complete_address = GuctilityBelt::concat_address(
-                $sanitized_data['street'],
-                $sanitized_data['city'],
-                $sanitized_data['state'],
-                $sanitized_data['zip']
-            );
-
-            update_post_meta($post_id, $prefix . "{$post_type}_address__complete", $complete_address);
-
-            if (isset(Backalley::$api_keys['google_maps'])) {
-                $coordinates = GuctilityBelt::google_geocode($complete_address, Backalley::$api_keys['google_maps']);
-
-                update_post_meta($post_id, "{$post_type}_address__geo", $coordinates);
-            }
-        }
+        AddressFieldSet::save_post_meta($post_id, $post, $update, $fieldset, $raw_data);
     }
 
     /**
@@ -229,21 +132,21 @@ class BackalleyLocation extends BackalleyConceptualPostType
         $instructions = [
             'phone' => [
                 'check' => 'phone',
-                'filter' => 'text_field',
+                'filter' => 'sanitize_text_field',
                 'type' => 'post_meta',
                 'item' => $post_id,
                 'save' => $prefix . "{$post->post_type}_contact_info__phone"
             ],
             'fax' => [
                 'check' => 'phone',
-                'filter' => 'text_field',
+                'filter' => 'sanitize_text_field',
                 'type' => 'post_meta',
                 'item' => $post_id,
                 'save' => $prefix . "{$post->post_type}_contact_info__fax"
             ],
             'email' => [
                 'check' => 'email',
-                'filter' => 'email',
+                'filter' => 'sanitize_email',
                 'type' => 'post_meta',
                 'item' => $post_id,
                 'save' => $prefix . "{$post->post_type}_contact_info__email"

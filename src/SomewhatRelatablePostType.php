@@ -154,8 +154,6 @@ class SomewhatRelatablePostType
         $this->set_shadow_taxonomy($shadow_taxonomy);
     }
 
-
-
     /**
      * Ensures $related_post_types are maatched to the shadowed_post_type via
      * $shadow_taxonomy using the safeguard function register_taxonomy_for_object_type()
