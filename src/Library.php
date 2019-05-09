@@ -99,8 +99,6 @@ class Library extends \BackalleyLibraryBase
     {
         $aliases = [
             "Backalley\\SortedFilteredClonedQuery" => "SFC_Query",
-            "Backalley\\BackalleyRestaurantLocation" => "BackalleyRestaurantLocation",
-            "Backalley\\BackalleyMenuItem" => "BackalleyMenuItem",
         ];
 
         foreach ($aliases as $class => $alias) {
