@@ -16,7 +16,7 @@ class SortableTaxonomy extends SortableObjectsBase
 {
     public $taxonomy;
     public $submenu_args;
-    public $terms;
+    public $terms = [];
     public $admin_uri;
     public $parent_slug;
     public $submenu_slug;
@@ -244,7 +244,10 @@ class SortableTaxonomy extends SortableObjectsBase
             'orderby' => $apex_position_meta_key
         ];
 
-        $terms = get_terms($terms);
+        if (empty($terms = get_terms($terms))) {
+            echo "<h1>There is currently nothing to sort</h1>";
+            return;
+        }
         $terms_walker = new SortableObjectsWalker;
         $terms_walker->set_object_type('term');
 

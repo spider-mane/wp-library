@@ -13,7 +13,7 @@ use function DeepCopy\deep_copy;
 
 class SortablePostsInTerm extends SortableObjectsBase
 {
-    public $terms;
+    public $terms = [];
     public $taxonomy;
     public $admin_uri;
     public $parent_slug;
@@ -214,9 +214,14 @@ class SortablePostsInTerm extends SortableObjectsBase
         $screen = get_current_screen();
 
         if ($screen->base === "toplevel_page_{$this::$admin_page_slug}" && $screen->post_type === $this->post_type->name) {
-            $term = filter_has_var(INPUT_GET, $this->taxonomy->name) ? sanitize_key($_GET[$this->taxonomy->name]) : '';
-            $term = get_term_by('slug', $term, $this->taxonomy->name, OBJECT);
-            $page_title = $this->submenu_args['page_title'] ?? "Sort {$this->post_type->label} in {$term->name}";
+            $term = filter_has_var(INPUT_GET, $this->taxonomy->name) ? sanitize_key($_GET[$this->taxonomy->name]) : null;
+
+            if (isset($term) && term_exists($term, $this->taxonomy->name)) {
+                $term = get_term_by('slug', $term, $this->taxonomy->name, OBJECT);
+                $page_title = "Sort {$this->post_type->label} in {$term->name}";
+            }
+
+            $page_title = $this->submenu_args['page_title'] ?? $page_title ?? "Sort {$this->post_type->label} in Terms";
 
             return "{$page_title}{$admin_title}";
         }
@@ -260,9 +265,9 @@ class SortablePostsInTerm extends SortableObjectsBase
             }
         }
 
-        if (!filter_has_var(INPUT_GET, $taxonomy) || empty($_GET[$taxonomy])) {
+        if (!filter_has_var(INPUT_GET, $taxonomy) || !term_exists($_GET[$taxonomy], $taxonomy)) {
             echo '<h1>This page cannot be viewed</h1>';
-            die;
+            return;
         }
 
 

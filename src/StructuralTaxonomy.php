@@ -6,6 +6,8 @@
 
 namespace Backalley;
 
+use Backalley\WP\Term\TermCustomField;
+
 class StructuralTaxonomy
 {
     public $taxonomy;
@@ -33,27 +35,13 @@ class StructuralTaxonomy
         $this->baronesque = $args['bottom'];
 
         $this->set_roles_data();
-        $this->init_option();
-
-        // add_action('set_object_terms', [$this, 'enforce_stuctural_integrity'], null, 3);
+        $this->add_term_field();
     }
 
     /**
      * 
      */
-    public function init_option()
-    {
-        new WP\TermCustomField([
-            'taxonomy' => $this->taxonomy,
-            'display' => [$this, 'term_form_field'],
-            'save' => [$this, 'update_term_roles']
-        ]);
-    }
-
-    /**
-     * 
-     */
-    public function term_form_field($taxonomy, $term)
+    public function add_term_field()
     {
         $options = ['' => 'Select Role'];
 
@@ -61,23 +49,23 @@ class StructuralTaxonomy
             $options[$role['name']] = $role['title'];
         }
 
-        $field = [
-            'form_element' => 'select',
-            'options' => $options,
-            'selected' => !empty($term) ? $this::get_term_role($term->term_id, $taxonomy) : '',
-            'attributes' => [
-                'id' => 'backalley--hierarchy-role',
-                'name' => 'backalley_hierarchy_role'
+        new TermCustomField([
+            'taxonomy' => $this->taxonomy,
+            'save_term_cb' => [$this, 'update_term_roles'],
+            'field' => [
+                'field' => 'select',
+                'title' => 'Hierarchy Role',
+                'description' => "Define a purpose for this term within the hierarcy",
+                'options' => $options,
+                'get_data_cb' => [$this, 'get_term_role'],
+                'name' => Self::$post_var,
+                'attributes' => [
+                    'id' => 'backalley--hierarchy-role',
+                ]
             ]
-        ];
+        ]);
 
-        $form_field = [
-            'label' => 'Hierarchy Role',
-            'description' => "Define a purpose for this term within the hierarcy",
-            'field' => $field
-        ];
-
-        return $form_field;
+        return $this;
     }
 
     /**
@@ -98,6 +86,8 @@ class StructuralTaxonomy
 
             $this->roles_data[] = $new_role_row;
         }
+
+        return $this;
     }
 
     /**
@@ -105,6 +95,10 @@ class StructuralTaxonomy
      */
     public function update_term_roles($term_id, $tt_id)
     {
+        if (!filter_has_var(INPUT_POST, Self::$post_var)) {
+            return;
+        }
+
         $roles = get_option($this::$wp_option, []);
         $prev_role = $this::get_term_role($term_id, $this->taxonomy->name);
         $term_role = sanitize_text_field($_POST[$this::$post_var]);
@@ -144,8 +138,11 @@ class StructuralTaxonomy
     /**
      * 
      */
-    public static function get_term_role($term_id, $taxonomy)
+    public static function get_term_role($term)
     {
+        $taxonomy = $term->taxonomy;
+        $term_id = (int)$term->term_id;
+
         $roles = get_option(Self::$wp_option, []);
 
         foreach ($roles as $role) {
