@@ -10,7 +10,7 @@
 
   "require": {
     "php": ">=7.0.0",
-    "backalley/backalley-core": "^0.2",
+    "backalley/backalley-core": "^0.3",
     "php-console/php-console": "^3.1",
     "composer/installers": "v1.0.12",
     "timber/timber": "^1.9",
