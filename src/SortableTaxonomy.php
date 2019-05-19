@@ -268,7 +268,7 @@ class SortableTaxonomy extends SortableObjectsBase
 
         // create array of values to pass template
         $template_data['objects'] = $terms;
-        $template_data['ba_title'] = "Sort {$taxonomy_object->label} for {$post_type_object->labels->name}";
+        $template_data['title'] = "Sort {$taxonomy_object->label} for {$post_type_object->labels->name}";
         $template_data['sorted_sortables'] = $terms_walker->walk($terms, 0, $terms_walker_args);
 
         // render template
