@@ -140,17 +140,18 @@ class StructuralTaxonomy
      */
     public static function get_term_role($term)
     {
-        $taxonomy = $term->taxonomy;
-        $term_id = (int)$term->term_id;
+        if (!$term) {
+            return;
+        }
 
         $roles = get_option(Self::$wp_option, []);
 
         foreach ($roles as $role) {
-            if ($role['taxonomy'] !== $taxonomy) {
+            if ($role['taxonomy'] !== $term->taxonomy) {
                 continue;
             }
 
-            if (in_array($term_id, $role['terms'])) {
+            if (in_array((int)$term->term_id, $role['terms'])) {
                 $know_your_role = $role['name'];
                 break;
             }
@@ -181,20 +182,3 @@ class StructuralTaxonomy
         return $terms ?? null;
     }
 }
-
-
-    // /**
-    //  * 
-    //  */
-    // public function enforce_stuctural_integrity($object_id, $tt_id, $taxonomy)
-    // {
-    //     if ($taxonomy !== $this->taxonomy->name) {
-    //         return;
-    //     }
-
-    //     $term = get_term_by('term_taxonomy_id', $tt_id, $taxonomy, OBJECT)->term_id;
-
-    //     if (get_term_meta($term, 'ba_structural_term', true)) {
-    //         wp_remove_object_terms($object_id, $term, $taxonomy);
-    //     }
-    // }
