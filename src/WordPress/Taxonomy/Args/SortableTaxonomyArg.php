@@ -1,6 +1,6 @@
 <?php
 
-namespace Backalley\WP\Taxonomy\Args;
+namespace Backalley\WordPress\Taxonomy\Args;
 
 use Backalley\SortableTaxonomy;
 

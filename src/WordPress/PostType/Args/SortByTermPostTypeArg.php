@@ -1,6 +1,6 @@
 <?php
 
-namespace Backalley\WP\PostType\Args;
+namespace Backalley\WordPress\PostType\Args;
 
 use Backalley\SortablePostsInTerm;
 
