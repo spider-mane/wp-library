@@ -10,11 +10,34 @@ use Backalley\Wordpress\Term\TermCustomField;
 
 class StructuralTaxonomy
 {
+    /**
+     * 
+     */
     public $taxonomy;
+
+    /**
+     * 
+     */
     public $roles;
+
+    /**
+     * 
+     */
     public $roles_data;
 
+    /**
+     * 
+     */
+    protected $select_options;
+
+    /**
+     * 
+     */
     public static $post_var = 'backalley_hierarchy_role';
+
+    /**
+     * 
+     */
     public static $wp_option = 'ba_structural_term_roles';
 
     /**
@@ -43,11 +66,7 @@ class StructuralTaxonomy
      */
     public function add_term_field()
     {
-        $options = ['' => 'Select Role'];
-
-        foreach ($this->roles_data as $role) {
-            $options[$role['name']] = $role['title'];
-        }
+        $this->set_select_options();
 
         new TermCustomField([
             'taxonomy' => $this->taxonomy,
@@ -56,7 +75,7 @@ class StructuralTaxonomy
                 'field' => 'select',
                 'title' => 'Hierarchy Role',
                 'description' => "Define a purpose for this term within the hierarcy",
-                'options' => $options,
+                'options' => $this->select_options,
                 'get_data_cb' => [$this, 'get_term_role'],
                 'name' => Self::$post_var,
                 'attributes' => [
@@ -64,6 +83,22 @@ class StructuralTaxonomy
                 ]
             ]
         ]);
+
+        return $this;
+    }
+
+    /**
+     * 
+     */
+    protected function set_select_options()
+    {
+        $options = ['' => 'Select Role'];
+
+        foreach ($this->roles_data as $role) {
+            $options[$role['name']] = $role['title'];
+        }
+
+        $this->select_options = $options;
 
         return $this;
     }
