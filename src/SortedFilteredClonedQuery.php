@@ -1,5 +1,10 @@
 <?php
 
+namespace Backalley;
+
+use function DeepCopy\deep_copy;
+
+
 /**
  * Sorted Filtered Cloned Query
  * 
@@ -10,13 +15,11 @@
  * foreach loop rather than querying for posts in each iteration
  * 
  */
-
-namespace Backalley;
-
-use function DeepCopy\deep_copy;
-
 class SortedFilteredClonedQuery extends \WP_Query
 {
+    /**
+     * 
+     */
     public function __construct($term_id, $taxonomy, $query = null, $meta_key = null, $field = null)
     {
         if (!$query) {

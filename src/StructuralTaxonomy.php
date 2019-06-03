@@ -6,7 +6,7 @@
 
 namespace Backalley;
 
-use Backalley\WP\Term\TermCustomField;
+use Backalley\Wordpress\Term\TermCustomField;
 
 class StructuralTaxonomy
 {
