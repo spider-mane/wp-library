@@ -1,17 +1,11 @@
 <?php
 
+namespace Backalley;
+
+
 /**
  * @package Backalley-Core
  */
-
-namespace Backalley;
-
-use Twig_Function;
-use Twig_SimpleFilter;
-use Twig_Extension_StringLoader;
-
-use function DeepCopy\deep_copy;
-
 class Library extends \BackalleyLibraryBase
 {
     public static $args;
@@ -58,21 +52,6 @@ class Library extends \BackalleyLibraryBase
      */
     public static function config_twig($twig)
     {
-        $twig->addExtension(new Twig_Extension_StringLoader());
-        $twig->addFilter(new Twig_SimpleFilter('subjectify_objects', 'backalley_subjectify_wp_objects'));
-
-        $twig->addFilter(new Twig_SimpleFilter('clone_original', function ($original) {
-            return deep_copy($original);
-        }));
-
-        $twig->addFilter(new Twig_SimpleFilter('sort_terms_hierarchicaly', function ($var) {
-        // $filtered = [];
-            sort_terms_hierarchicaly($var, $filtered);
-            return $filtered;
-        }));
-
-        $twig->addFunction(new Twig_Function('wp_submit_button', 'submit_button'));
-
         return $twig;
     }
 
