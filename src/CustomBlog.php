@@ -14,7 +14,7 @@ class CustomBlog
     /**
      * 
      */
-    public static function create_from_post($description, $icon)
+    public static function from_posts($description = '', $icon = null)
     {
         global $wp_post_types;
         $wp_post = $wp_post_types['post'];
