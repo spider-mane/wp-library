@@ -29,6 +29,7 @@ class WpModuleLoader
      */
     protected static function get_file($module)
     {
+        $module = preg_replace('/\//', DIRECTORY_SEPARATOR, $module);
         return self::get_directory() . $module . '.php';
     }
 
