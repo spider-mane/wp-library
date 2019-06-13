@@ -5,21 +5,21 @@ namespace Backalley;
 /**
  * 
  */
-class WpModuleLoader
+class WpModuleLoader extends FileLoader
 {
     /**
-     * @var int $stack the trace level of the call to get_directory() from the initial class method call
+     * 
      */
     protected static $stack = 4;
 
     /**
      * 
      */
-    protected static function register_hook(string $load, string $module, int $priority = null, $extension = 'php')
+    protected static function register_hook(string $hook, string $module, int $priority = null, string $extension)
     {
         $file = static::get_file($module, $extension);
 
-        add_action($load, function () use ($file) {
+        add_action($hook, function () use ($file) {
             include $file;
 
         }, $priority, 0);
@@ -28,27 +28,7 @@ class WpModuleLoader
     /**
      * 
      */
-    protected static function get_file($module, $ext)
-    {
-        return static::get_directory() . preg_replace('/\//', DIRECTORY_SEPARATOR, $module) . '.' . $ext;
-    }
-
-    /**
-     * 
-     */
-    protected static function get_directory()
-    {
-        $dir = debug_backtrace(null, static::$stack);
-        $dir = explode(DIRECTORY_SEPARATOR, $dir[static::$stack - 1]['file'], -1);
-        $dir = implode(DIRECTORY_SEPARATOR, $dir) . DIRECTORY_SEPARATOR;
-
-        return $dir;
-    }
-
-    /**
-     * 
-     */
-    public static function hook(string $load, string $module, int $priority = null, $extension = 'php')
+    public static function hook(string $hook, string $module, int $priority = null, string $extension = 'php')
     {
         static::register_hook($hook, $module, $priority, $extension);
     }
