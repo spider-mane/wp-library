@@ -2,17 +2,17 @@
 
 namespace Backalley;
 
-use Backalley\WordPress\PostType;
-use Backalley\WordPress\Taxonomy;
+use Backalley\WordPress\PostType\PostType;
+use Backalley\WordPress\Taxonomy\Taxonomy;
 
 
 /**
- * 
+ *
  */
 class WpAdminBuilder extends FileLoader
 {
     /**
-     * 
+     *
      */
     protected static $stack = 4;
 
@@ -24,7 +24,7 @@ class WpAdminBuilder extends FileLoader
     public static $config_dir = 'config';
 
     /**
-     * 
+     *
      */
     protected static function get_args($file)
     {
@@ -35,7 +35,7 @@ class WpAdminBuilder extends FileLoader
     }
 
     /**
-     * 
+     *
      */
     public static function post_types(string $post_types = 'post-types')
     {
@@ -43,7 +43,7 @@ class WpAdminBuilder extends FileLoader
     }
 
     /**
-     * 
+     *
      */
     public static function taxonomies(string $taxonomies = 'taxonomies')
     {
