@@ -1,24 +1,25 @@
 <?php
 
-namespace Backalley;
+namespace Backalley\SortableObjects;
 
+use Backalley\SortableObjects\SortableObjectsBase;
 use function DeepCopy\deep_copy;
 
 
 /**
  * Sorted Filtered Cloned Query
- * 
+ *
  * Simple helper class that clones an instance of WP_Query, filters the posts array based on a term relationship, then
  * sorts the filtered array based on a user defined display order.
- * 
+ *
  * Useful for gathering all posts intended for display in one query and visually compartmentalizing them by term in a
  * foreach loop rather than querying for posts in each iteration
- * 
+ *
  */
 class SortedFilteredClonedQuery extends \WP_Query
 {
     /**
-     * 
+     *
      */
     public function __construct($term_id, $taxonomy, $query = null, $meta_key = null, $field = null)
     {

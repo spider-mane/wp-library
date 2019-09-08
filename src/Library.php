@@ -2,6 +2,10 @@
 
 namespace Backalley;
 
+use Backalley\SortableObjects\SortablePostsInTerm;
+use Backalley\SortableObjects\SortableTaxonomy;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 /**
  * @package Backalley-Core
@@ -11,7 +15,7 @@ class Library extends \BackalleyLibraryBase
     public static $args;
 
     /**
-     * 
+     *
      */
     public static function init(array $args = [])
     {
@@ -32,7 +36,7 @@ class Library extends \BackalleyLibraryBase
     }
 
     /**
-     * 
+     *
      */
     public static function enqueue()
     {
@@ -42,21 +46,53 @@ class Library extends \BackalleyLibraryBase
 
         # backalley scripts
         wp_enqueue_script('backalley-starter-script--sort-objects', Self::$admin_url . '/assets/js/backalley-sortable-objects.js', null, time(), true);
-    
+
         # backalley styles
         wp_enqueue_style('backalley-starter-styles--sort-objects', Self::$admin_url . '/assets/css/backalley-sortable-objects.css', null, time());
     }
 
     /**
-     * 
+     *
      */
     public static function config_twig($twig)
     {
+        self::custom_twig_filters($twig);
+        self::custom_twig_functions($twig);
+
         return $twig;
     }
 
     /**
-     * 
+     *
+     */
+    public static function custom_twig_filters($twig)
+    {
+        $filters = [];
+
+        foreach ($filters as $filter => $function) {
+            $twig->addFilter(new TwigFilter($filter, $function));
+        }
+    }
+
+    /**
+     *
+     */
+    public static function custom_twig_functions($twig)
+    {
+        $functions = [
+            'submit_button' => 'submit_button',
+            'settings_fields' => 'settings_fields',
+            'do_settings_sections' => 'do_settings_sections',
+            'settings_errors' => 'settings_errors',
+        ];
+
+        foreach ($functions as $alias => $function) {
+            $twig->addFunction(new TwigFunction($alias, $function));
+        }
+    }
+
+    /**
+     *
      */
     public static function super_set($super_set = null)
     {
@@ -72,12 +108,12 @@ class Library extends \BackalleyLibraryBase
     }
 
     /**
-     * 
+     *
      */
     public static function alias_classes()
     {
         $aliases = [
-            "Backalley\\SortedFilteredClonedQuery" => "SFC_Query",
+            "Backalley\\SortableObjects\\SortedFilteredClonedQuery" => "SFC_Query",
         ];
 
         foreach ($aliases as $class => $alias) {

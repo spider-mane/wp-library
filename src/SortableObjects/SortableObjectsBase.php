@@ -4,12 +4,14 @@
  * @package Backalley-Starter
  */
 
-namespace Backalley;
+namespace Backalley\SortableObjects;
+
+use Backalley\GuctilityBelt;
 
 abstract class SortableObjectsBase
 {
     /**
-     * 
+     *
      */
     public static function order_objects_array($objects, $object_type, $orderby_apex, $orderby_hierarchy)
     {
@@ -27,12 +29,12 @@ abstract class SortableObjectsBase
         foreach ($objects as $object) {
             if (empty($object->$object_parent)) {
                 $apex_objects[] = $object;
-                $apex_order[$object->$object_id] = (int)get_metadata($object_type, $object->$object_id, $orderby_apex, true);
+                $apex_order[$object->$object_id] = (int) get_metadata($object_type, $object->$object_id, $orderby_apex, true);
             }
 
             if (!empty($object->$object_parent)) {
                 $hierarchy_objects[] = $object;
-                $hierarchy_order[$object->$object_id] = (int)get_metadata($object_type, $object->$object_id, $orderby_hierarchy, true);
+                $hierarchy_order[$object->$object_id] = (int) get_metadata($object_type, $object->$object_id, $orderby_hierarchy, true);
             }
         }
 

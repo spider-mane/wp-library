@@ -1,18 +1,18 @@
 <?php
 
-namespace Backalley;
+namespace Backalley\CleanWp;
 
 
 /**
  * @package backalley-starter
- * 
+ *
  * Change ui attributes of the "Post" post type to establish it as the blog feature of
  * site rather than primary purpose as suggested by defaults
  */
 class CustomBlog
 {
     /**
-     * 
+     *
      */
     public static function from_posts($description = '', $icon = null)
     {

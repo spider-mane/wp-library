@@ -1,12 +1,14 @@
 <?php
 
 /**
- * 
+ *
  */
 
-namespace Backalley\WordPress\PostType\Args;
+namespace Backalley\Post2Post;
 
-use Backalley\SomewhatRelatablePostType;
+use Backalley\Post2Post\SomewhatRelatablePostType;
+use Backalley\Wordpress\PostType\Deprecated\CustomArgInterface;
+
 
 class SomewhatRelatableToPostTypeArg implements CustomArgInterface
 {

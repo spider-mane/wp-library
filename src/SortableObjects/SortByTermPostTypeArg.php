@@ -1,8 +1,9 @@
 <?php
 
-namespace Backalley\WordPress\PostType\Args;
+namespace Backalley\SortableObjects;
 
-use Backalley\SortablePostsInTerm;
+use Backalley\SortableObjects\SortablePostsInTerm;
+use Backalley\Wordpress\PostType\Deprecated\CustomArgInterface;
 
 class SortByTermPostTypeArg implements CustomArgInterface
 {

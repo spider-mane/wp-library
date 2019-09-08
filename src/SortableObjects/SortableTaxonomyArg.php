@@ -1,8 +1,9 @@
 <?php
 
-namespace Backalley\WordPress\Taxonomy\Args;
+namespace Backalley\SortableObjects;
 
-use Backalley\SortableTaxonomy;
+use Backalley\SortableObjects\SortableTaxonomy;
+use Backalley\Wordpress\Taxonomy\Deprecated\CustomTaxonomyArgInterface;
 
 
 class SortableTaxonomyArg implements CustomTaxonomyArgInterface

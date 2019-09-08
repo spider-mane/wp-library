@@ -4,7 +4,7 @@
  * @package Backalley-Starter
  */
 
-namespace Backalley;
+namespace Backalley\SortableObjects;
 
 class SortableObjectsWalker extends \Walker
 {
@@ -71,8 +71,8 @@ class SortableObjectsWalker extends \Walker
 
         $object_id = $object->{$id_field};
 
-        $apex_display_position = (int)get_metadata($this->tree_type, $object_id, $args['apex_meta_key'], true);
-        $hierarchy_display_position = (int)get_metadata($this->tree_type, $object_id, $args['hierarchy_meta_key'], true);
+        $apex_display_position = (int) get_metadata($this->tree_type, $object_id, $args['apex_meta_key'], true);
+        $hierarchy_display_position = (int) get_metadata($this->tree_type, $object_id, $args['hierarchy_meta_key'], true);
 
         // input values
         // $common_input_classes = 'order-input small 0hide-if-js';
@@ -98,7 +98,7 @@ class SortableObjectsWalker extends \Walker
 
         $after_title = $args['after_title'] ?? null;
         $before_end = $args['before_end'] ?? null;
-        
+
 
         // render output
         $output .= "<li class='{$li_classes}' id='ba--object-{$object_id}'>\n";

@@ -4,12 +4,13 @@
  * @package Backalley-Starter
  */
 
-namespace Backalley;
+namespace Backalley\SortableObjects;
 
+use Backalley\Library;
+use Backalley\SortableObjects\SortableObjectsBase;
+use Backalley\SortableObjects\SortableObjectsWalker;
+use Backalley\SortableObjects\SortedFilteredClonedQuery;
 use Timber\Timber;
-use Timber\Helper;
-use Timber\Twig_Function;
-use function DeepCopy\deep_copy;
 
 class SortablePostsInTerm extends SortableObjectsBase
 {
@@ -40,7 +41,7 @@ class SortablePostsInTerm extends SortableObjectsBase
 
         //register callback to sort queries according to order values
         add_action("the_posts", [$this, 'order_objects_query'], null, 2);
-        
+
         // add_action("admin_notices", $this->admin_notices());
 
         if (isset($ui_args) && $ui_args !== false) {
@@ -166,7 +167,7 @@ class SortablePostsInTerm extends SortableObjectsBase
                 </button>
             </div>
 
-            <?php
+<?php
 
         };
     }
@@ -207,7 +208,7 @@ class SortablePostsInTerm extends SortableObjectsBase
     }
 
     /**
-     * 
+     *
      */
     public function fix_subpage_title($admin_title, $title)
     {
@@ -230,7 +231,7 @@ class SortablePostsInTerm extends SortableObjectsBase
     }
 
     /**
-     * 
+     *
      */
     public function add_row_action($actions, $term)
     {
@@ -244,7 +245,7 @@ class SortablePostsInTerm extends SortableObjectsBase
     }
 
     /**
-     * 
+     *
      */
     public static function register_admin_page($menu_slug = null)
     {
@@ -288,11 +289,11 @@ class SortablePostsInTerm extends SortableObjectsBase
             $hierarchy_positions = $_REQUEST[$hierarchy_position_input_name] ?? [];
 
             foreach ($apex_positions as $post_id => $position) {
-                update_post_meta($post_id, $apex_position_meta_key, (int)$position);
+                update_post_meta($post_id, $apex_position_meta_key, (int) $position);
             }
 
             foreach ($hierarchy_positions as $post_id => $position) {
-                update_post_meta($post_id, $hierarchy_position_meta_key, (int)$position);
+                update_post_meta($post_id, $hierarchy_position_meta_key, (int) $position);
             }
         }
         // end process input data
@@ -318,7 +319,7 @@ class SortablePostsInTerm extends SortableObjectsBase
         $posts_walker = new SortableObjectsWalker;
         $posts_walker->set_object_type('post');
 
-           
+
         // get objects for constructing ui
         $taxonomy_object = get_taxonomy($taxonomy);
         $post_type_object = get_post_type_object($post_type);
@@ -344,7 +345,7 @@ class SortablePostsInTerm extends SortableObjectsBase
     /**
      * Creates a clone of a query object and filters and sorts the posts array by the meta key that. Basically a
      * pointless, but semantically accurate wrapper for SFC_Query.
-     * 
+     *
      * @return object returns a clone of either the default query or a supplied custom query with modified posts
      */
     public static function get_sorted_filtered_cloned_query($term_id, $taxonomy, $query = null)

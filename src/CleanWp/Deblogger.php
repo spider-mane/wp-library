@@ -1,14 +1,14 @@
 <?php
 
-namespace Backalley;
+namespace Backalley\CleanWp;
 
 /**
- * 
+ *
  */
 class Deblogger
 {
     /**
-     * 
+     *
      */
     public static function clear_dashboard()
     {

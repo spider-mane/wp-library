@@ -1,8 +1,9 @@
 <?php
 
-namespace Backalley\WordPress\Taxonomy\Args;
+namespace Backalley\StructuredTaxonomy;
 
-use Backalley\StructuralTaxonomy;
+use Backalley\StructuredTaxonomy\StructuralTaxonomy;
+use Backalley\Wordpress\Taxonomy\Deprecated\CustomTaxonomyArgInterface;
 
 
 class StructuralTaxonomyArg implements CustomTaxonomyArgInterface

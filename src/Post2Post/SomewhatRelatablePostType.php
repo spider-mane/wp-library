@@ -2,7 +2,7 @@
 
 /**
  * @package Backalley-Starter
- * 
+ *
  * Creates shadow terms to correspond to each post in a given post type.
  *
  * @original Post_Shadow_Term
@@ -17,7 +17,7 @@
  * @param string $shadow_taxonomy Optional taxonomy to use as a post type shadow
  */
 
-namespace Backalley;
+namespace Backalley\Post2Post;
 
 class SomewhatRelatablePostType
 {
@@ -192,8 +192,8 @@ class SomewhatRelatablePostType
     {
         return function ($post_id, $post, $update) use ($shadowed_post_type, $shadow_taxonomy) {
             $return_if_conditions = [
-                (bool)(!$update),
-                (bool)(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE),
+                (bool) (!$update),
+                (bool) (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE),
                 // (bool)(!filter_has_var(INPUT_POST, 'original_post_status')),
             ];
 
@@ -247,7 +247,7 @@ class SomewhatRelatablePostType
             }
 
             $term = get_term_by('slug', strval($post_id), $shadow_taxonomy);
-            $term = (int)$term->term_id;
+            $term = (int) $term->term_id;
 
             wp_delete_term($term, $shadow_taxonomy);
         };
@@ -295,7 +295,7 @@ class SomewhatRelatablePostType
             $wpdb->update(
                 $wpdb->prefix . 'term_taxonomy',
                 ['taxonomy' => $this->shadow_taxonomy],
-                ['term_taxonomy_id' => $new->term_id],
+                ['term_taxonomy_id' => $term->term_id],
                 ['%s'],
                 ['%d']
             );

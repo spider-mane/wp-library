@@ -4,13 +4,10 @@
  * @package Backalley-Starter
  */
 
-namespace Backalley;
+namespace Backalley\SortableObjects;
 
+use Backalley\Library;
 use Timber\Timber;
-use Timber\Helper;
-use Timber\Twig_Function;
-
-use function DeepCopy\deep_copy;
 
 class SortableTaxonomy extends SortableObjectsBase
 {
@@ -74,7 +71,7 @@ class SortableTaxonomy extends SortableObjectsBase
     }
 
     /**
-     * 
+     *
      */
     public function set_ui_args($ui_args)
     {
@@ -84,7 +81,7 @@ class SortableTaxonomy extends SortableObjectsBase
     }
 
     /**
-     * 
+     *
      */
     public function add_admin_page()
     {
@@ -141,7 +138,7 @@ class SortableTaxonomy extends SortableObjectsBase
                 </button>
             </div>
 
-            <?php
+<?php
 
         }
     }
@@ -182,7 +179,7 @@ class SortableTaxonomy extends SortableObjectsBase
     }
 
     /**
-     * 
+     *
      */
     public function fix_subpage_title($admin_title, $title)
     {
@@ -199,7 +196,7 @@ class SortableTaxonomy extends SortableObjectsBase
     }
 
     /**
-     * 
+     *
      */
     public static function register_admin_page($menu_slug = null)
     {
@@ -229,11 +226,11 @@ class SortableTaxonomy extends SortableObjectsBase
             $hierarchy_positions = $_REQUEST[$hierarchy_position_input_name] ?? [];
 
             foreach ($apex_positions as $term_id => $position) {
-                update_term_meta($term_id, $apex_position_meta_key, (int)$position);
+                update_term_meta($term_id, $apex_position_meta_key, (int) $position);
             }
 
             foreach ($hierarchy_positions as $term_id => $position) {
-                update_term_meta($term_id, $hierarchy_position_meta_key, (int)$position);
+                update_term_meta($term_id, $hierarchy_position_meta_key, (int) $position);
             }
         }
         // end process input data
