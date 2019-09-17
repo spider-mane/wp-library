@@ -1,41 +1,11 @@
 <?php
 
-/**
- * 
- */
-
 namespace Backalley;
 
 class GuctilityBelt
 {
     /**
-     * Convert custom argument to an FQN
-     */
-    public static function arg_to_class($arg, $class_format = '', $namespace = '')
-    {
-        $bridge = str_replace('_', ' ', $arg);
-
-        $bridge = ucwords($bridge);
-        $bridge = str_replace(' ', '', $bridge);
-
-        $class = $namespace . "\\" . sprintf($class_format, $bridge);
-
-        return $class;
-    }
-
-    /**
-     * 
-     */
-    public static function one_versus_many($key, $fields)
-    {
-        if (array_key_exists($key, $fields)) {
-            return [$fields];
-        }
-        return $fields;
-    }
-
-    /**
-     * 
+     *
      */
     public static function sort_objects_array(array $objects_array, array $order_array, string $order_key)
     {
@@ -64,7 +34,7 @@ class GuctilityBelt
     }
 
     /**
-     * 
+     *
      */
     public static function sort_objects_by_meta(array $objects, string $object_type, string $meta_key)
     {
@@ -82,7 +52,7 @@ class GuctilityBelt
     }
 
     /**
-     * 
+     *
      */
     public static function infer_object_properties($object_type, $properties = null)
     {
@@ -193,59 +163,6 @@ class GuctilityBelt
         wp_send_json($return);
 
         wp_die();
-    }
-
-    /**
-     *  
-     */
-    public static function safe_save_post($post, $nonce, $action)
-    {
-        $unsafe_conditions = [
-
-            !isset($_POST[$nonce]), // nonce field does not exist
-
-            !wp_verify_nonce($_POST[$nonce], $action), // nonce action does not match
-
-            defined('DOING_AUTOSAVE') && DOING_AUTOSAVE, // wp performing autosave
-
-            !current_user_can('edit_post', $post->ID) // current user does not have required permission
-        ];
-
-        foreach ($unsafe_conditions as $condition) {
-            if ((bool) $condition) return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Send Request to google to geocode given address
-     */
-    public static function google_geocode(string $address, string $key)
-    {
-        if (empty($address)) {
-            return '';
-        }
-
-        $address = urlencode($address);
-
-        $url = "https://maps.googleapis.com/maps/api/geocode/json?address={$address}&key={$key}";
-
-        $response = json_decode(file_get_contents($url), true);
-
-        if ('OK' === $response['status']) {
-            $coordinates = $response['results'][0]['geometry']['location'];
-
-            return json_encode($coordinates);
-        }
-    }
-
-    /**
-     *
-     */
-    public static function concat_address($street, $city, $state, $zip)
-    {
-        return "${street}, ${city}, ${state} ${zip}";
     }
 
     /**

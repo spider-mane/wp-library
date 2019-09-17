@@ -4,7 +4,7 @@
  * @package Backalley-Core
  */
 
-namespace Backalley\StructuredTaxonomy;
+namespace Backalley\TaxRoles;
 
 use Backalley\Form\Fields\Select;
 use Backalley\Form\Managers\FieldDataManagerCallback;

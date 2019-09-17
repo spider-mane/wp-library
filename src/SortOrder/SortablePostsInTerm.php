@@ -4,13 +4,12 @@
  * @package Backalley-Starter
  */
 
-namespace Backalley\SortableObjects;
+namespace Backalley\SortOrder;
 
 use Backalley\Library;
-use Backalley\SortableObjects\SortableObjectsBase;
-use Backalley\SortableObjects\SortableObjectsWalker;
-use Backalley\SortableObjects\SortedFilteredClonedQuery;
-use Timber\Timber;
+use Backalley\SortOrder\SortableObjectsBase;
+use Backalley\SortOrder\SortableObjectsWalker;
+use Backalley\SortOrder\SortedFilteredClonedQuery;
 
 class SortablePostsInTerm extends SortableObjectsBase
 {

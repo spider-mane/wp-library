@@ -1,8 +1,8 @@
 <?php
 
-namespace Backalley\StructuredTaxonomy;
+namespace Backalley\TaxRoles;
 
-use Backalley\StructuredTaxonomy\StructuralTaxonomy;
+use Backalley\TaxRoles\StructuralTaxonomy;
 use Backalley\Wordpress\Taxonomy\OptionHandlerInterface;
 
 class StructuralTaxonomyArg implements OptionHandlerInterface

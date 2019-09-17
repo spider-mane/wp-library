@@ -2,9 +2,9 @@
 
 namespace Backalley;
 
-use Backalley\SortableObjects\SortablePostsInTerm;
-use Backalley\SortableObjects\SortableTaxonomy;
-use Backalley\SortableObjects\SortedFilteredClonedQuery;
+use Backalley\SortOrder\SortablePostsInTerm;
+use Backalley\SortOrder\SortableTaxonomy;
+use Backalley\SortOrder\SortedFilteredClonedQuery;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
@@ -12,11 +12,6 @@ use Twig\TwigFunction;
 
 class Library extends \BackalleyLibraryBase
 {
-    /**
-     *
-     */
-    public static $options;
-
     /**
      * @var Environment
      */
@@ -27,12 +22,11 @@ class Library extends \BackalleyLibraryBase
      */
     public static function init(array $options = [])
     {
-        static::$options = $options;
-
         static::load();
+        static::hook();
         static::aliasClasses();
         static::initTwig();
-        static::hook();
+        static::registerPages();
     }
 
     /**
@@ -145,7 +139,9 @@ class Library extends \BackalleyLibraryBase
      */
     public static function registerPages()
     {
-        SortableTaxonomy::register_admin_page();
-        SortablePostsInTerm::register_admin_page();
+        add_action('admin_menu', function () {
+            SortableTaxonomy::register_admin_page();
+            SortablePostsInTerm::register_admin_page();
+        });
     }
 }

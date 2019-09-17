@@ -1,8 +1,8 @@
 <?php
 
-namespace Backalley\SortableObjects;
+namespace Backalley\SortOrder;
 
-use Backalley\SortableObjects\SortableTaxonomy;
+use Backalley\SortOrder\SortableTaxonomy;
 use Backalley\Wordpress\Taxonomy\OptionHandlerInterface;
 use Backalley\Wordpress\Traits\RunsOnWpLoadedTrait;
 

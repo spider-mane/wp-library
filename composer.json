@@ -1,12 +1,12 @@
 {
   "name": "webtheory/wp-library",
-
-  "description": "Wordpress Admin Features Library",
+  "description": "Wordpress helpers and features library",
+  "license": "GPL-3.0-or-later",
 
   "authors": [
     {
       "name": "Chris Williams",
-      "email": "laserbeamvocalist@gmail.com"
+      "email": "spider.mane.web@gmail.com"
     }
   ],
 

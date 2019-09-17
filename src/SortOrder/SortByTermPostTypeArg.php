@@ -1,8 +1,8 @@
 <?php
 
-namespace Backalley\SortableObjects;
+namespace Backalley\SortOrder;
 
-use Backalley\SortableObjects\SortablePostsInTerm;
+use Backalley\SortOrder\SortablePostsInTerm;
 use Backalley\WordPress\PostType\OptionHandlerInterface;
 use Backalley\Wordpress\Traits\RunsOnWpLoadedTrait;
 
