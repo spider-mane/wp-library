@@ -3,18 +3,15 @@
 namespace Backalley\StructuredTaxonomy;
 
 use Backalley\StructuredTaxonomy\StructuralTaxonomy;
-use Backalley\Wordpress\Taxonomy\Deprecated\CustomTaxonomyArgInterface;
+use Backalley\Wordpress\Taxonomy\OptionHandlerInterface;
 
-
-class StructuralTaxonomyArg implements CustomTaxonomyArgInterface
+class StructuralTaxonomyArg implements OptionHandlerInterface
 {
-    public static function pass($taxonomy, $args)
+    /**
+     * {@inheritDoc}
+     */
+    public static function handle(\WP_Taxonomy $taxonomy, $args)
     {
-        return new StructuralTaxonomy($taxonomy, $args);
-    }
-
-    public static function run()
-    {
-        return;
+        new StructuralTaxonomy($taxonomy, $args);
     }
 }

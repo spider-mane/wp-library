@@ -3,26 +3,54 @@
 namespace Backalley\SortableObjects;
 
 use Backalley\SortableObjects\SortableTaxonomy;
-use Backalley\Wordpress\Taxonomy\Deprecated\CustomTaxonomyArgInterface;
+use Backalley\Wordpress\Taxonomy\OptionHandlerInterface;
+use Backalley\Wordpress\Traits\RunsOnWpLoadedTrait;
 
-
-class SortableTaxonomyArg implements CustomTaxonomyArgInterface
+class SortableTaxonomyArg implements OptionHandlerInterface
 {
-    public static $taxonomy;
-    public static $post_type;
-    public static $args;
+    use RunsOnWpLoadedTrait;
 
-    public static function pass($taxonomy, $args)
+    /**
+     *
+     */
+    protected $taxonomy;
+
+    /**
+     *
+     */
+    protected $postType;
+
+    /**
+     *
+     */
+    protected $args;
+
+    /**
+     *
+     */
+    protected function __construct($taxonomy, $postType, $args)
     {
-        Self::$taxonomy = $taxonomy;
-        Self::$post_type = $args['post_types'];
-
-        unset($args['post_types']);
-        Self::$args = $args;
+        $this->taxonomy = $taxonomy;
+        $this->postType = $postType;
+        $this->args = $args;
     }
 
-    public static function run()
+    /**
+     *
+     */
+    public function run()
     {
-        return new SortableTaxonomy(Self::$taxonomy, Self::$post_type, Self::$args);
+        new SortableTaxonomy($this->taxonomy, $this->postType, $this->args);
+    }
+
+    /**
+     *
+     */
+    public static function handle(\WP_Taxonomy $taxonomy, $args)
+    {
+        $postType = $args['post_types'];
+        unset($args['post_types']);
+
+        (new static($taxonomy->name, $postType, $args))->hook();
     }
 }

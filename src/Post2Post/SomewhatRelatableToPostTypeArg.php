@@ -1,28 +1,47 @@
 <?php
 
-/**
- *
- */
-
 namespace Backalley\Post2Post;
 
 use Backalley\Post2Post\SomewhatRelatablePostType;
-use Backalley\Wordpress\PostType\Deprecated\CustomArgInterface;
+use Backalley\WordPress\PostType\OptionHandlerInterface;
+use Backalley\Wordpress\Traits\RunsOnWpLoadedTrait;
 
-
-class SomewhatRelatableToPostTypeArg implements CustomArgInterface
+class SomewhatRelatableToPostTypeArg implements OptionHandlerInterface
 {
-    public static $relatable_post_type;
-    public static $related_post_type;
+    use RunsOnWpLoadedTrait;
 
-    public static function pass($post_type, $related_post_type)
+    /**
+     *
+     */
+    protected $relatablePostType;
+
+    /**
+     *
+     */
+    protected $relatedPostType;
+
+    /**
+     *
+     */
+    protected function __construct($relatablePostType, $relatedPostType)
     {
-        Self::$relatable_post_type = $post_type->name;
-        Self::$related_post_type = $related_post_type;
+        $this->relatablePostType = $relatablePostType;
+        $this->relatedPostType = $relatedPostType;
     }
 
-    public static function run()
+    /**
+     *
+     */
+    public function run()
     {
-        return new SomewhatRelatablePostType(Self::$relatable_post_type, Self::$related_post_type);
+        new SomewhatRelatablePostType($this->relatablePostType, $this->relatedPostType);
+    }
+
+    /**
+     *
+     */
+    public static function handle(\WP_Post_Type $postType, $relatedPostType)
+    {
+        (new static($postType->name, $relatedPostType))->hook();
     }
 }

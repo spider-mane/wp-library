@@ -20,7 +20,7 @@ class SortableTaxonomy extends SortableObjectsBase
 
     static $admin_page_slug;
 
-    public function __construct($taxonomy, $post_type, $ui_args)
+    public function __construct(string $taxonomy, string $post_type, array $ui_args)
     {
         $this->set_taxonomy($taxonomy);
         $this->set_post_type($post_type);
@@ -34,9 +34,9 @@ class SortableTaxonomy extends SortableObjectsBase
     /**
      *
      */
-    public function set_taxonomy($taxonomy)
+    public function set_taxonomy(string $taxonomy)
     {
-        $this->taxonomy = is_object($taxonomy) ? $taxonomy : get_taxonomy($taxonomy);
+        $this->taxonomy = get_taxonomy($taxonomy);
 
         return $this;
     }
@@ -44,9 +44,9 @@ class SortableTaxonomy extends SortableObjectsBase
     /**
      *
      */
-    public function set_post_type($post_type)
+    public function set_post_type(string $post_type)
     {
-        $this->post_type = is_object($post_type) ? $post_type : get_post_type_object($post_type);
+        $this->post_type = get_post_type_object($post_type);
 
         return $this;
     }
@@ -269,8 +269,7 @@ class SortableTaxonomy extends SortableObjectsBase
         $template_data['sorted_sortables'] = $terms_walker->walk($terms, 0, $terms_walker_args);
 
         // render template
-        Timber::$locations = Library::$timber_locations;
-        Timber::render('admin-page__sortable-objects.twig', $template_data);
+        echo Library::renderTemplate('admin-page__sortable-objects', $template_data);
     }
 
     /**

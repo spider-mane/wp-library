@@ -19,13 +19,30 @@
 
 namespace Backalley\Post2Post;
 
+use Backalley\GuctilityBelt;
+use Exception;
+
 class SomewhatRelatablePostType
 {
+    /**
+     *
+     */
     public $shadow_taxonomy;
-    public $shadowed_post_type;
-    public $stax_object;
-    public $spt_object;
 
+    /**
+     *
+     */
+    public $shadowed_post_type;
+
+    /**
+     *
+     */
+    public $stax_object;
+
+    /**
+     *
+     */
+    public $spt_object;
 
     /**
      *
@@ -37,9 +54,6 @@ class SomewhatRelatablePostType
      */
     public function __construct($shadowed_post_type, $related_post_types = null, $shadow_taxonomy = null, $labels = null)
     {
-        // parent::__construct();
-
-
         if (!isset($shadow_taxonomy)) {
             $this->create_shadow_taxonomy($shadowed_post_type, $related_post_types, $labels);
         } elseif (!empty($shadow_taxonomy) && taxonomy_exists($shadow_taxonomy)) {
@@ -51,11 +65,6 @@ class SomewhatRelatablePostType
         }
 
         $this->puppeteer_shadow_terms($shadowed_post_type, $this->shadow_taxonomy);
-
-        // if ($update === true) $this->shadow_existing_posts($shadowed_post_type);
-
-
-        // die(var_dump(get_taxonomy($this->shadow_taxonomy))); // for testing only
     }
 
     /**
@@ -71,6 +80,9 @@ class SomewhatRelatablePostType
         // $this->stax_object = get_taxonomy($this->shadow_taxonomy);
     }
 
+    /**
+     *
+     */
     public function set_spt_object($shadowed_post_type)
     {
         $this->spt_object = get_post_type_object($shadowed_post_type);
@@ -155,7 +167,7 @@ class SomewhatRelatablePostType
     }
 
     /**
-     * Ensures $related_post_types are maatched to the shadowed_post_type via
+     * Ensures $related_post_types are matched to the shadowed_post_type via
      * $shadow_taxonomy using the safeguard function register_taxonomy_for_object_type()
      * provided in the WordPress Core
      *
@@ -170,7 +182,7 @@ class SomewhatRelatablePostType
             throw new Exception('$related_post_types argument passed to ' . __FUNCTION__ . '() must be string or array');
         }
 
-        foreach (is_array($related_post_types) ? $related_post_types : [$related_post_types] as $post_type) {
+        foreach ((array) $related_post_types as $post_type) {
             $registered = register_taxonomy_for_object_type($shadow_taxonomy, $post_type);
         }
     }

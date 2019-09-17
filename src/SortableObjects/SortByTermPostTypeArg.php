@@ -3,25 +3,54 @@
 namespace Backalley\SortableObjects;
 
 use Backalley\SortableObjects\SortablePostsInTerm;
-use Backalley\Wordpress\PostType\Deprecated\CustomArgInterface;
+use Backalley\WordPress\PostType\OptionHandlerInterface;
+use Backalley\Wordpress\Traits\RunsOnWpLoadedTrait;
 
-class SortByTermPostTypeArg implements CustomArgInterface
+class SortByTermPostTypeArg implements OptionHandlerInterface
 {
-    public static $post_type;
-    public static $taxonomy;
-    public static $args;
+    use RunsOnWpLoadedTrait;
 
-    public static function pass($post_type, $args)
+    /**
+     *
+     */
+    public $postType;
+
+    /**
+     *
+     */
+    public $taxonomy;
+
+    /**
+     *
+     */
+    public $args;
+
+    /**
+     *
+     */
+    protected function __construct($postType, $taxonomy, $args)
     {
-        Self::$post_type = $post_type->name;
-        Self::$taxonomy = $args['taxonomy'];
-
-        unset($args['taxonomy']);
-        Self::$args = $args;
+        $this->postType = $postType;
+        $this->taxonomy = $taxonomy;
+        $this->args = $args;
     }
 
-    public static function run()
+    /**
+     *
+     */
+    public function run()
     {
-        return new SortablePostsInTerm(Self::$post_type, Self::$taxonomy, Self::$args);
+        return new SortablePostsInTerm($this->postType, $this->taxonomy, $this->args);
+    }
+
+    /**
+     *
+     */
+    public static function handle(\WP_Post_Type $postType, $args)
+    {
+        $taxonomy = $args['taxonomy'];
+        unset($args['taxonomy']);
+
+        (new static($postType->name, $taxonomy, $args))->hook();
     }
 }

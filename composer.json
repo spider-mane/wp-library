@@ -1,32 +1,32 @@
 {
-  "name": "backalley/backalley-starter",
+  "name": "webtheory/wp-library",
 
   "description": "Wordpress Admin Features Library",
 
-  "authors": [{
-    "name": "Chris Williams",
-    "email": "laserbeamvocalist@gmail.com"
-  }],
+  "authors": [
+    {
+      "name": "Chris Williams",
+      "email": "laserbeamvocalist@gmail.com"
+    }
+  ],
 
   "require": {
     "php": ">=7.0.0",
-    "backalley/backalley-core": ">=0.4.0",
-    "php-console/php-console": "^3.1",
     "composer/installers": "v1.0.12",
-    "timber/timber": "^1.9",
+    "myclabs/deep-copy": "^1.8",
     "respect/validation": "^1.1",
-    "myclabs/deep-copy": "^1.8"
+    "twig/twig": "^2.0",
+    "webtheory/backalley": "^0.6.0"
   },
-
-  "repositories": [{
-    "type": "vcs",
-    "url": "git@github.com:spider-mane/backalley-core"
-  }],
 
   "autoload": {
     "psr-4": {
       "Backalley\\": "src/"
     },
     "files": ["backalley-starter.php"]
+  },
+
+  "config": {
+    "sort-packages": true
   }
 }

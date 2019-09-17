@@ -338,8 +338,7 @@ class SortablePostsInTerm extends SortableObjectsBase
         $template_data['title'] = "Sort {$post_type_object->labels->name} in {$term->name}";
         $template_data['sorted_sortables'] = $posts_walker->walk($posts, 0, $posts_walker_args);
 
-        Timber::$locations = Library::$timber_locations;
-        Timber::render('admin-page__sortable-objects.twig', $template_data);
+        echo Library::renderTemplate('admin-page__sortable-objects', $template_data);
     }
 
     /**

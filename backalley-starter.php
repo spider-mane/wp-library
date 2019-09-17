@@ -1,7 +1,15 @@
 <?php
 
 /**
- * @package Backalley Starter
+ * This file is part of the Backalley package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package   WpLibrary
+ * @license   GNU GPL
+ * @copyright Copyright (C) WebTheory Studio, All rights reserved.
+ * @link      https://github.com/spider-mane/backalley
+ * @author    Chris Williams <christwilhelm84@gmail.com>
  */
 
 if (!class_exists('BackalleyLibraryBase')) {

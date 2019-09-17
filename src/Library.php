@@ -4,35 +4,44 @@ namespace Backalley;
 
 use Backalley\SortableObjects\SortablePostsInTerm;
 use Backalley\SortableObjects\SortableTaxonomy;
+use Backalley\SortableObjects\SortedFilteredClonedQuery;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-/**
- * @package Backalley-Core
- */
 class Library extends \BackalleyLibraryBase
 {
-    public static $args;
+    /**
+     *
+     */
+    public static $options;
+
+    /**
+     * @var Environment
+     */
+    protected static $twigInstance;
 
     /**
      *
      */
-    public static function init(array $args = [])
+    public static function init(array $options = [])
     {
-        Self::load();
+        static::$options = $options;
 
-        Self::$args = $args;
+        static::load();
+        static::aliasClasses();
+        static::initTwig();
+        static::hook();
+    }
 
-        add_action('admin_enqueue_scripts', [__class__, 'enqueue']);
-        add_filter('timber/twig', [__class__, 'config_twig']);
-
-        Self::alias_classes();
-        Self::super_set();
-
-        add_action('admin_menu', function () {
-            SortableTaxonomy::register_admin_page();
-            SortablePostsInTerm::register_admin_page();
-        });
+    /**
+     *
+     */
+    protected static function hook()
+    {
+        add_action('admin_enqueue_scripts', [static::class, 'enqueue']);
+        add_action('admin_menu', [static::class, 'registerPages']);
     }
 
     /**
@@ -45,19 +54,45 @@ class Library extends \BackalleyLibraryBase
         wp_enqueue_script('jquery-ui-sortable');
 
         # backalley scripts
-        wp_enqueue_script('backalley-starter-script--sort-objects', Self::$admin_url . '/assets/js/backalley-sortable-objects.js', null, time(), true);
+        wp_enqueue_script('backalley-starter-script--sort-objects', static::$admin_url . '/assets/js/backalley-sortable-objects.js', null, time(), true);
 
         # backalley styles
-        wp_enqueue_style('backalley-starter-styles--sort-objects', Self::$admin_url . '/assets/css/backalley-sortable-objects.css', null, time());
+        wp_enqueue_style('backalley-starter-styles--sort-objects', static::$admin_url . '/assets/css/backalley-sortable-objects.css', null, time());
     }
 
     /**
      *
      */
-    public static function config_twig($twig)
+    protected static function initTwig()
     {
-        self::custom_twig_filters($twig);
-        self::custom_twig_functions($twig);
+        $options = [
+            'autoescape' => false,
+        ];
+
+        $loader = new FilesystemLoader(static::$admin_templates);
+
+        $twig = new Environment($loader, $options);
+
+        static::configTwig($twig);
+
+        static::$twigInstance = $twig;
+    }
+
+    /**
+     *
+     */
+    public static function renderTemplate($template, $context)
+    {
+        return static::$twigInstance->render("{$template}.twig", $context);
+    }
+
+    /**
+     *
+     */
+    protected static function configTwig($twig)
+    {
+        static::addTwigFilters($twig);
+        static::addTwigFunctions($twig);
 
         return $twig;
     }
@@ -65,7 +100,7 @@ class Library extends \BackalleyLibraryBase
     /**
      *
      */
-    public static function custom_twig_filters($twig)
+    protected static function addTwigFilters($twig)
     {
         $filters = [];
 
@@ -77,7 +112,7 @@ class Library extends \BackalleyLibraryBase
     /**
      *
      */
-    public static function custom_twig_functions($twig)
+    protected static function addTwigFunctions($twig)
     {
         $functions = [
             'submit_button' => 'submit_button',
@@ -94,30 +129,23 @@ class Library extends \BackalleyLibraryBase
     /**
      *
      */
-    public static function super_set($super_set = null)
+    protected static function aliasClasses()
     {
-        foreach (Self::$args['super_set'] ?? [] as $conceptual_post_type => $super_set) {
+        $aliases = [
+            "SFC_Query" => SortedFilteredClonedQuery::class,
+        ];
 
-            foreach ($super_set as $super_set => $set_args) {
-                $set_args = is_array($set_args) ? $set_args : [$set_args];
-                $super_set = "super_set_{$super_set}";
-
-                $conceptual_post_type::$super_set(...$set_args);
-            }
+        foreach ($aliases as $alias => $class) {
+            class_alias($class, $alias);
         }
     }
 
     /**
      *
      */
-    public static function alias_classes()
+    public static function registerPages()
     {
-        $aliases = [
-            "Backalley\\SortableObjects\\SortedFilteredClonedQuery" => "SFC_Query",
-        ];
-
-        foreach ($aliases as $class => $alias) {
-            class_alias($class, $alias);
-        }
+        SortableTaxonomy::register_admin_page();
+        SortablePostsInTerm::register_admin_page();
     }
 }

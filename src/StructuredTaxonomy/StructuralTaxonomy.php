@@ -85,8 +85,7 @@ class StructuralTaxonomy
             ->addField($controller)
             ->hook();
 
-        $field = (new TermField($this->taxonomy->name))
-            ->setFormFieldController($controller)
+        $field = (new TermField($this->taxonomy->name, $controller))
             ->setLabel('Hierarchy Role')
             ->setDescription('Define a purpose for this term within the hierarcy')
             ->hook();
@@ -192,12 +191,12 @@ class StructuralTaxonomy
 
             if (in_array((int) $id, $role['terms'])) {
 
-                $role = $role['name'];
+                $name = $role['name'];
                 break;
             }
         }
 
-        return $role ?? '';
+        return $name ?? null;
     }
 
     /**
