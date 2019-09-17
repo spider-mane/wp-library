@@ -16,7 +16,7 @@
     "myclabs/deep-copy": "^1.8",
     "respect/validation": "^1.1",
     "twig/twig": "^2.0",
-    "webtheory/backalley": "^0.6.0"
+    "webtheory/backalley": "^0.6"
   },
 
   "autoload": {
