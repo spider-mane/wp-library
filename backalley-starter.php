@@ -8,7 +8,7 @@
  * @package   WpLibrary
  * @license   GNU GPL
  * @copyright Copyright (C) WebTheory Studio, All rights reserved.
- * @link      https://github.com/spider-mane/backalley
+ * @link      https://github.com/spider-mane/backalley-starter
  * @author    Chris Williams <christwilhelm84@gmail.com>
  */
 
@@ -24,7 +24,6 @@ if (!class_exists('BackalleyLibraryBase')) {
         public static $base;
         public static $admin_url;
         public static $admin_templates;
-        public static $timber_locations;
 
         public static function load()
         {
@@ -34,11 +33,6 @@ if (!class_exists('BackalleyLibraryBase')) {
 
             Self::$admin_url = Self::$url . "public/admin";
             Self::$admin_templates = Self::$path . "/public/admin/templates";
-
-            Self::$timber_locations = [
-                Self::$admin_templates,
-                Self::$admin_templates . '/macros',
-            ];
         }
     }
 }
