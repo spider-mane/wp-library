@@ -27,6 +27,12 @@
     "files": ["backalley-starter.php"]
   },
 
+  "extra": {
+    "installer-paths": {
+      "vendor/{$vendor}/{$name}": ["type:wordpress-muplugin", "type:wordpress-plugin"]
+    }
+  },
+
   "config": {
     "sort-packages": true
   }
