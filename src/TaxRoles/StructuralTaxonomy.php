@@ -8,9 +8,9 @@ namespace Backalley\TaxRoles;
 
 use Backalley\Form\Fields\Select;
 use Backalley\Form\Managers\FieldDataManagerCallback;
+use Backalley\WordPress\Fields\WpAdminField;
+use Backalley\WordPress\Forms\Controllers\TermFieldFormSubmissionManager;
 use Backalley\WordPress\Term\Field as TermField;
-use Backalley\Wordpress\Fields\WpAdminField;
-use Backalley\Wordpress\Forms\Controllers\TermFieldFormSubmissionManager;
 
 class StructuralTaxonomy
 {

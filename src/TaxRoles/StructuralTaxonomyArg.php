@@ -3,7 +3,7 @@
 namespace Backalley\TaxRoles;
 
 use Backalley\TaxRoles\StructuralTaxonomy;
-use Backalley\Wordpress\Taxonomy\OptionHandlerInterface;
+use Backalley\WordPress\Taxonomy\OptionHandlerInterface;
 
 class StructuralTaxonomyArg implements OptionHandlerInterface
 {

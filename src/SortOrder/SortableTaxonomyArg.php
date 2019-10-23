@@ -3,8 +3,8 @@
 namespace Backalley\SortOrder;
 
 use Backalley\SortOrder\SortableTaxonomy;
-use Backalley\Wordpress\Taxonomy\OptionHandlerInterface;
-use Backalley\Wordpress\Traits\RunsOnWpLoadedTrait;
+use Backalley\WordPress\Taxonomy\OptionHandlerInterface;
+use Backalley\WordPress\Traits\RunsOnWpLoadedTrait;
 
 class SortableTaxonomyArg implements OptionHandlerInterface
 {

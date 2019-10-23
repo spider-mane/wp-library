@@ -3,7 +3,7 @@
 namespace Backalley\Taxtrubute;
 
 use Backalley\Form\Contracts\FieldDataManagerInterface;
-use Backalley\Wordpress\Fields\Managers\PostMetaFieldManager;
+use Backalley\WordPress\Fields\Managers\PostMetaFieldManager;
 
 class TermBasedPostMeta extends PostMetaFieldManager implements FieldDataManagerInterface
 {

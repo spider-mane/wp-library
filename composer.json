@@ -14,6 +14,7 @@
   "require": {
     "php": ">=7.0.0",
     "composer/installers": "^1.7",
+    "filp/whoops": "^2.5",
     "myclabs/deep-copy": "^1.8",
     "respect/validation": "^1.1",
     "twig/twig": "^2.0",

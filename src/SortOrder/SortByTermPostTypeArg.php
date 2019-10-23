@@ -4,7 +4,7 @@ namespace Backalley\SortOrder;
 
 use Backalley\SortOrder\SortablePostsInTerm;
 use Backalley\WordPress\PostType\OptionHandlerInterface;
-use Backalley\Wordpress\Traits\RunsOnWpLoadedTrait;
+use Backalley\WordPress\Traits\RunsOnWpLoadedTrait;
 
 class SortByTermPostTypeArg implements OptionHandlerInterface
 {

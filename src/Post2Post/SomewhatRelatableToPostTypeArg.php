@@ -4,7 +4,7 @@ namespace Backalley\Post2Post;
 
 use Backalley\Post2Post\SomewhatRelatablePostType;
 use Backalley\WordPress\PostType\OptionHandlerInterface;
-use Backalley\Wordpress\Traits\RunsOnWpLoadedTrait;
+use Backalley\WordPress\Traits\RunsOnWpLoadedTrait;
 
 class SomewhatRelatableToPostTypeArg implements OptionHandlerInterface
 {
