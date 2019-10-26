@@ -1,9 +1,9 @@
 <?php
 
-namespace Backalley\TaxRoles;
+namespace WebTheory\TaxRoles;
 
-use Backalley\TaxRoles\StructuralTaxonomy;
-use Backalley\WordPress\Taxonomy\OptionHandlerInterface;
+use WebTheory\TaxRoles\StructuralTaxonomy;
+use WebTheory\Leonidas\Taxonomy\OptionHandlerInterface;
 
 class StructuralTaxonomyArg implements OptionHandlerInterface
 {

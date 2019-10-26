@@ -1,8 +1,8 @@
 <?php
 
-namespace Backalley\SortOrder;
+namespace WebTheory\SortOrder;
 
-use Backalley\SortOrder\SortableObjectsBase;
+use WebTheory\SortOrder\SortableObjectsBase;
 // use function DeepCopy\deep_copy;
 
 /**

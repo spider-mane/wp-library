@@ -1,15 +1,11 @@
 <?php
 
-/**
- * @package Backalley-Starter
- */
+namespace WebTheory\SortOrder;
 
-namespace Backalley\SortOrder;
-
-use Backalley\Library;
-use Backalley\SortOrder\SortableObjectsBase;
-use Backalley\SortOrder\SortableObjectsWalker;
-use Backalley\SortOrder\SortedFilteredClonedQuery;
+use WebTheory\SortOrder\SortableObjectsBase;
+use WebTheory\SortOrder\SortableObjectsWalker;
+use WebTheory\SortOrder\SortedFilteredClonedQuery;
+use WebTheory\WpLibrary;
 
 class SortablePostsInTerm extends SortableObjectsBase
 {
@@ -337,7 +333,7 @@ class SortablePostsInTerm extends SortableObjectsBase
         $template_data['title'] = "Sort {$post_type_object->labels->name} in {$term->name}";
         $template_data['sorted_sortables'] = $posts_walker->walk($posts, 0, $posts_walker_args);
 
-        echo Library::renderTemplate('admin-page__sortable-objects', $template_data);
+        echo WpLibrary::renderTemplate('admin-page__sortable-objects', $template_data);
     }
 
     /**

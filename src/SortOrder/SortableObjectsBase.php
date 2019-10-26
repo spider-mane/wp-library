@@ -4,9 +4,9 @@
  * @package Backalley-Starter
  */
 
-namespace Backalley\SortOrder;
+namespace WebTheory\SortOrder;
 
-use Backalley\GuctilityBelt;
+use WebTheory\GuctilityBelt;
 
 abstract class SortableObjectsBase
 {

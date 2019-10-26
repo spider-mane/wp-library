@@ -1,9 +1,9 @@
 <?php
 
-namespace Backalley\Taxtrubute;
+namespace WebTheory\Taxtrubute;
 
-use Backalley\Form\Contracts\FieldDataManagerInterface;
-use Backalley\WordPress\Fields\Managers\PostMetaFieldManager;
+use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
+use WebTheory\Leonidas\Fields\Managers\PostMetaFieldManager;
 
 class TermBasedPostMeta extends PostMetaFieldManager implements FieldDataManagerInterface
 {

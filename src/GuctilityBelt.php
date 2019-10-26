@@ -1,6 +1,6 @@
 <?php
 
-namespace Backalley;
+namespace WebTheory;
 
 class GuctilityBelt
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Backalley\SortOrder;
+namespace WebTheory\SortOrder;
 
-use Backalley\SortOrder\SortableTaxonomy;
-use Backalley\WordPress\Taxonomy\OptionHandlerInterface;
-use Backalley\WordPress\Traits\RunsOnWpLoadedTrait;
+use WebTheory\SortOrder\SortableTaxonomy;
+use WebTheory\Leonidas\Taxonomy\OptionHandlerInterface;
+use WebTheory\Leonidas\Traits\RunsOnWpLoadedTrait;
 
 class SortableTaxonomyArg implements OptionHandlerInterface
 {

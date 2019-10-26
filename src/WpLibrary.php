@@ -1,16 +1,16 @@
 <?php
 
-namespace Backalley;
+namespace WebTheory;
 
-use Backalley\SortOrder\SortablePostsInTerm;
-use Backalley\SortOrder\SortableTaxonomy;
-use Backalley\SortOrder\SortedFilteredClonedQuery;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use WebTheory\SortOrder\SortablePostsInTerm;
+use WebTheory\SortOrder\SortableTaxonomy;
+use WebTheory\SortOrder\SortedFilteredClonedQuery;
 
-class Library extends \BackalleyLibraryBase
+class WpLibrary extends \WebTheoryWpLibrary
 {
     /**
      * @var Environment

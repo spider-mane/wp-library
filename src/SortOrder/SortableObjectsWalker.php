@@ -4,7 +4,7 @@
  * @package Backalley-Starter
  */
 
-namespace Backalley\SortOrder;
+namespace WebTheory\SortOrder;
 
 class SortableObjectsWalker extends \Walker
 {

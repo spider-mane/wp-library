@@ -17,9 +17,9 @@
  * @param string $shadow_taxonomy Optional taxonomy to use as a post type shadow
  */
 
-namespace Backalley\Post2Post;
+namespace WebTheory\Post2Post;
 
-use Backalley\GuctilityBelt;
+use WebTheory\GuctilityBelt;
 use Exception;
 
 class SomewhatRelatablePostType

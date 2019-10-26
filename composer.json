@@ -4,12 +4,10 @@
   "type": "wordpress-muplugin",
   "license": "GPL-3.0-or-later",
 
-  "authors": [
-    {
-      "name": "Chris Williams",
-      "email": "spider.mane.web@gmail.com"
-    }
-  ],
+  "authors": [{
+    "name": "Chris Williams",
+    "email": "spider.mane.web@gmail.com"
+  }],
 
   "require": {
     "php": ">=7.0.0",
@@ -18,14 +16,18 @@
     "myclabs/deep-copy": "^1.8",
     "respect/validation": "^1.1",
     "twig/twig": "^2.0",
-    "webtheory/backalley": "~0.6.4"
+    "webtheory/backalley": "^0.7.2"
   },
 
   "autoload": {
     "psr-4": {
-      "Backalley\\": "src/"
+      "WebTheory\\": "src/"
     },
-    "files": ["backalley-starter.php"]
+    "files": ["wp-library.php"]
+  },
+
+  "autoload-dev": {
+    "files": ["test/start.php"]
   },
 
   "extra": {

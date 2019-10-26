@@ -1,10 +1,10 @@
 <?php
 
-namespace Backalley\SortOrder;
+namespace WebTheory\SortOrder;
 
-use Backalley\SortOrder\SortablePostsInTerm;
-use Backalley\WordPress\PostType\OptionHandlerInterface;
-use Backalley\WordPress\Traits\RunsOnWpLoadedTrait;
+use WebTheory\SortOrder\SortablePostsInTerm;
+use WebTheory\Leonidas\PostType\OptionHandlerInterface;
+use WebTheory\Leonidas\Traits\RunsOnWpLoadedTrait;
 
 class SortByTermPostTypeArg implements OptionHandlerInterface
 {

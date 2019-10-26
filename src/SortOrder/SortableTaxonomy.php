@@ -1,12 +1,8 @@
 <?php
 
-/**
- * @package Backalley-Starter
- */
+namespace WebTheory\SortOrder;
 
-namespace Backalley\SortOrder;
-
-use Backalley\Library;
+use WebTheory\WpLibrary;
 
 class SortableTaxonomy extends SortableObjectsBase
 {
@@ -244,6 +240,7 @@ class SortableTaxonomy extends SortableObjectsBase
             echo "<h1>There is currently nothing to sort</h1>";
             return;
         }
+
         $terms_walker = new SortableObjectsWalker;
         $terms_walker->set_object_type('term');
 
@@ -268,7 +265,7 @@ class SortableTaxonomy extends SortableObjectsBase
         $template_data['sorted_sortables'] = $terms_walker->walk($terms, 0, $terms_walker_args);
 
         // render template
-        echo Library::renderTemplate('admin-page__sortable-objects', $template_data);
+        echo WpLibrary::renderTemplate('admin-page__sortable-objects', $template_data);
     }
 
     /**

@@ -1,23 +1,30 @@
 <?php
 
-use Backalley\Form\Controllers\FormFieldController;
-use Backalley\Form\Fields\Checklist;
-use Backalley\Library;
-use Backalley\Post2Post\TermRelatedPostsManager;
-use Backalley\WordPress\Forms\Controllers\PostMetaBoxFormSubmissionManager;
-use Backalley\WordPress\MetaBox\MetaBox;
-use Backalley\WordPress\PostType\Factory as PostTypeFactory;
-use Backalley\WordPress\Screen;
-use Backalley\WordPress\Taxonomy\Factory as TaxonomyFactory;
+use WebTheory\Leonidas\Forms\Controllers\PostMetaBoxFormSubmissionManager;
+use WebTheory\Leonidas\Leonidas;
+use WebTheory\Leonidas\MetaBox\MetaBox;
+use WebTheory\Leonidas\PostType\Factory as PostTypeFactory;
+use WebTheory\Leonidas\Screen;
+use WebTheory\Leonidas\Taxonomy\Factory as TaxonomyFactory;
+use WebTheory\Post2Post\TermRelatedPostsManager;
+use WebTheory\Saveyour\Controllers\FormFieldController;
+use WebTheory\Saveyour\Fields\Checklist;
+use WebTheory\WpLibrary;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
+################################################################################
 
-Library::init();
-
+// error handling
 (new Run)->prependHandler(new PrettyPageHandler)->register(); // error handling with whoops
 
+//init
+Leonidas::init();
+WpLibrary::init();
 
+/**
+ *
+ */
 add_action('init', function () {
 
     $app = require 'config/app.php';
@@ -29,8 +36,6 @@ add_action('init', function () {
 
     $postTypes = (new PostTypeFactory($postTypeHandlers))->create($postTypes);
     $taxonomies = (new TaxonomyFactory($taxonomyHandlers))->create($taxonomies);
-
-    require 'admin-page.php';
 });
 
 /**

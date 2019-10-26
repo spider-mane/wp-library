@@ -4,13 +4,13 @@
  * @package Backalley-Core
  */
 
-namespace Backalley\TaxRoles;
+namespace WebTheory\TaxRoles;
 
-use Backalley\Form\Fields\Select;
-use Backalley\Form\Managers\FieldDataManagerCallback;
-use Backalley\WordPress\Fields\WpAdminField;
-use Backalley\WordPress\Forms\Controllers\TermFieldFormSubmissionManager;
-use Backalley\WordPress\Term\Field as TermField;
+use WebTheory\Saveyour\Fields\Select;
+use WebTheory\Saveyour\Managers\FieldDataManagerCallback;
+use WebTheory\Leonidas\Fields\WpAdminField;
+use WebTheory\Leonidas\Forms\Controllers\TermFieldFormSubmissionManager;
+use WebTheory\Leonidas\Term\Field as TermField;
 
 class StructuralTaxonomy
 {

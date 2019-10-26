@@ -1,10 +1,10 @@
 <?php
 
-namespace Backalley\Post2Post;
+namespace WebTheory\Post2Post;
 
-use Backalley\Post2Post\SomewhatRelatablePostType;
-use Backalley\WordPress\PostType\OptionHandlerInterface;
-use Backalley\WordPress\Traits\RunsOnWpLoadedTrait;
+use WebTheory\Post2Post\SomewhatRelatablePostType;
+use WebTheory\Leonidas\PostType\OptionHandlerInterface;
+use WebTheory\Leonidas\Traits\RunsOnWpLoadedTrait;
 
 class SomewhatRelatableToPostTypeArg implements OptionHandlerInterface
 {

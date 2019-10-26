@@ -1,12 +1,12 @@
 <?php
 
-use Backalley\Post2Post\SomewhatRelatableToPostTypeArg;
-use Backalley\Post2Post\TermRelatedPostsManager;
-use Backalley\SortOrder\SortByTermPostTypeArg;
-use Backalley\SortOrder\SortableTaxonomyArg;
-use Backalley\TaxRoles\StructuralTaxonomyArg;
-use Backalley\Taxtrubute\TermBasedPostMeta;
-use Backalley\WordPress\Taxonomy\OptionHandlers\MaintainMetaboxHierarchy;
+use WebTheory\Post2Post\SomewhatRelatableToPostTypeArg;
+use WebTheory\Post2Post\TermRelatedPostsManager;
+use WebTheory\SortOrder\SortByTermPostTypeArg;
+use WebTheory\SortOrder\SortableTaxonomyArg;
+use WebTheory\TaxRoles\StructuralTaxonomyArg;
+use WebTheory\Taxtrubute\TermBasedPostMeta;
+use WebTheory\Leonidas\Taxonomy\OptionHandlers\MaintainMetaboxHierarchy;
 
 return [
     'data_managers' => [
