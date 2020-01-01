@@ -19,8 +19,9 @@
 
 namespace WebTheory\Post2Post;
 
-use WebTheory\GuctilityBelt;
 use Exception;
+
+use function WebTheory\Leonidas\Helpers\json_encode_wp_safe;
 
 class SomewhatRelatablePostType
 {
@@ -234,7 +235,7 @@ class SomewhatRelatablePostType
             }
 
             // Update the term meta regardless of circumstances
-            $term_meta = GuctilityBelt::json_encode([
+            $term_meta = json_encode_wp_safe([
                 'shadow_term_of_post_of_type' => $post->post_type,
                 'post_status' => $post_status,
             ]);

@@ -20,8 +20,12 @@ class WpLibrary extends \WebTheoryWpLibrary
     /**
      *
      */
-    public static function init(array $options = [])
+    public static function init()
     {
+        if (static::isLoaded()) {
+            throw new \Exception('Do not call ' . __METHOD__ . ' method.');
+        }
+
         static::load();
         static::hook();
         static::aliasClasses();
@@ -48,10 +52,10 @@ class WpLibrary extends \WebTheoryWpLibrary
         wp_enqueue_script('jquery-ui-sortable');
 
         # backalley scripts
-        wp_enqueue_script('backalley-starter-script--sort-objects', static::$admin_url . '/assets/js/backalley-sortable-objects.js', null, time(), true);
+        wp_enqueue_script('backalley-starter-script--sort-objects', static::$assets . '/js/backalley-sortable-objects.js', null, time(), true);
 
         # backalley styles
-        wp_enqueue_style('backalley-starter-styles--sort-objects', static::$admin_url . '/assets/css/backalley-sortable-objects.css', null, time());
+        wp_enqueue_style('backalley-starter-styles--sort-objects', static::$assets . '/css/backalley-sortable-objects.css', null, time());
     }
 
     /**
@@ -63,7 +67,7 @@ class WpLibrary extends \WebTheoryWpLibrary
             'autoescape' => false,
         ];
 
-        $loader = new FilesystemLoader(static::$admin_templates);
+        $loader = new FilesystemLoader(static::$templates);
 
         $twig = new Environment($loader, $options);
 

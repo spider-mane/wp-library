@@ -6,28 +6,29 @@
 
 namespace WebTheory\TaxRoles;
 
-use WebTheory\Saveyour\Fields\Select;
-use WebTheory\Saveyour\Managers\FieldDataManagerCallback;
+use Psr\Http\Message\ServerRequestInterface;
 use WebTheory\Leonidas\Fields\WpAdminField;
 use WebTheory\Leonidas\Forms\Controllers\TermFieldFormSubmissionManager;
 use WebTheory\Leonidas\Term\Field as TermField;
+use WebTheory\Saveyour\Fields\Select;
+use WebTheory\Saveyour\Managers\FieldDataManagerCallback;
 
 class StructuralTaxonomy
 {
     /**
      *
      */
-    public $taxonomy;
+    protected $taxonomy;
 
     /**
      *
      */
-    public $roles;
+    protected $roles;
 
     /**
      *
      */
-    public $roles_data;
+    protected $roles_data;
 
     /**
      *
@@ -35,25 +36,28 @@ class StructuralTaxonomy
     protected $select_options;
 
     /**
-     *
-     */
-    public static $post_var = 'backalley_hierarchy_role';
-
-    /**
-     *
-     */
-    public static $wp_option = 'ba_structural_term_roles';
-
-    /**
      * role that signifies a term as being of the lowest possible ranking
      */
-    public $baronesque;
+    protected $baronesque;
 
     /**
      * role that signifies term is of the highest possible ranking
      */
-    public $sovereign;
+    protected $sovereign;
 
+    /**
+     *
+     */
+    protected static $post_var = 'backalley_hierarchy_role';
+
+    /**
+     *
+     */
+    protected static $wp_option = 'ba_structural_term_roles';
+
+    /**
+     *
+     */
     public function __construct($taxonomy, $args = null)
     {
         $this->taxonomy = $taxonomy;
@@ -87,7 +91,7 @@ class StructuralTaxonomy
 
         $field = (new TermField($this->taxonomy->name, $controller))
             ->setLabel('Hierarchy Role')
-            ->setDescription('Define a purpose for this term within the hierarcy')
+            ->setDescription('Define a purpose for this term within the hierarchy')
             ->hook();
 
         return $this;
@@ -134,10 +138,11 @@ class StructuralTaxonomy
     /**
      *
      */
-    public function update_term_roles($term, $term_role)
+    public function update_term_roles(ServerRequestInterface $request, $term_role)
     {
+        $term = $request->getAttribute('term', null);
         $roles = get_option($this::$wp_option, []);
-        $prev_role = $this::get_term_role($term, $this->taxonomy->name);
+        $prev_role = $this::get_term_role($request, $this->taxonomy->name);
 
         if ($prev_role === $term_role) {
             return false;
@@ -174,8 +179,10 @@ class StructuralTaxonomy
     /**
      *
      */
-    public function get_term_role($term)
+    public function get_term_role(ServerRequestInterface $request)
     {
+        $term = $request->getAttribute('term', null);
+
         if (!$term) {
             return;
         }

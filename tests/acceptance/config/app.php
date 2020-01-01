@@ -6,7 +6,6 @@ use WebTheory\SortOrder\SortByTermPostTypeArg;
 use WebTheory\SortOrder\SortableTaxonomyArg;
 use WebTheory\TaxRoles\StructuralTaxonomyArg;
 use WebTheory\Taxtrubute\TermBasedPostMeta;
-use WebTheory\Leonidas\Taxonomy\OptionHandlers\MaintainMetaboxHierarchy;
 
 return [
     'data_managers' => [
@@ -21,7 +20,6 @@ return [
         ],
 
         'taxonomy' => [
-            'maintain_mb_hierarchy' => MaintainMetaboxHierarchy::class,
             'sortable' => SortableTaxonomyArg::class,
             'structural' => StructuralTaxonomyArg::class,
         ],

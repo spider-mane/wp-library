@@ -6,7 +6,9 @@
 
 namespace WebTheory\SortOrder;
 
-use WebTheory\GuctilityBelt;
+use function WebTheory\GuctilityBelt\sort_objects_array;
+use function WebTheory\Leonidas\Helpers\infer_object_properties;
+use function WebTheory\Leonidas\Helpers\sort_objects_by_meta;
 
 abstract class SortableObjectsBase
 {
@@ -15,7 +17,7 @@ abstract class SortableObjectsBase
      */
     public static function order_objects_array($objects, $object_type, $orderby_apex, $orderby_hierarchy)
     {
-        $properties = GuctilityBelt::infer_object_properties($object_type);
+        $properties = infer_object_properties($object_type);
 
         $object_id = $properties['object_id'];
         $object_parent = $properties['object_parent'];
@@ -38,11 +40,11 @@ abstract class SortableObjectsBase
             }
         }
 
-        $apex_objects = GuctilityBelt::sort_objects_array($apex_objects, $apex_order, $object_id);
-        $hierarchy_objects = GuctilityBelt::sort_objects_array($hierarchy_objects, $hierarchy_order, $object_id);
+        $apex_objects = sort_objects_array($apex_objects, $apex_order, $object_id);
+        $hierarchy_objects = sort_objects_array($hierarchy_objects, $hierarchy_order, $object_id);
 
-        // $apex_objects = GuctilityBelt::sort_objects_by_meta($apex_objects, $object_type, $orderby_apex);
-        // $hierarchy_objects = GuctilityBelt::sort_objects_by_meta($hierarchy_objects, $object_type, $orderby_hierarchy);
+        // $apex_objects = sort_objects_by_meta($apex_objects, $object_type, $orderby_apex);
+        // $hierarchy_objects = sort_objects_by_meta($hierarchy_objects, $object_type, $orderby_hierarchy);
 
         return array_merge($apex_objects, $hierarchy_objects);
     }

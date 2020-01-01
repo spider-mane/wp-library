@@ -2,11 +2,10 @@
 
 namespace WebTheory\Post2Post;
 
+use Psr\Http\Message\ServerRequestInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
-use WebTheory\Saveyour\DataSchemes\IO;
-use WebTheory\Saveyour\Managers\AbstractFieldDataManager;
 
-class TermRelatedPostsManager extends AbstractFieldDataManager implements FieldDataManagerInterface, IO
+class TermRelatedPostsManager implements FieldDataManagerInterface
 {
     /**
      * The taxonomy that shadows the relatable post type
@@ -87,8 +86,9 @@ class TermRelatedPostsManager extends AbstractFieldDataManager implements FieldD
     /**
      *
      */
-    public function getCurrentData($post)
+    public function getCurrentData(ServerRequestInterface $request)
     {
+        $post = $request->getAttribute('post');
         $this->setContext($post);
 
         if ('related' === $this->context) {
@@ -103,8 +103,9 @@ class TermRelatedPostsManager extends AbstractFieldDataManager implements FieldD
     /**
      *
      */
-    public function handleSubmittedData($post, $data): bool
+    public function handleSubmittedData(ServerRequestInterface $request, $data): bool
     {
+        $post = $request->getAttribute('post');
         $this->setContext($post);
 
         if ('relatable' === $this->context) {

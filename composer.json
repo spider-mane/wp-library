@@ -1,6 +1,6 @@
 {
   "name": "webtheory/wp-library",
-  "description": "Wordpress helpers and features library",
+  "description": "Leonidas based module library for WordPress",
   "type": "wordpress-muplugin",
   "license": "GPL-3.0-or-later",
 
@@ -10,13 +10,13 @@
   }],
 
   "require": {
-    "php": ">=7.0.0",
+    "php": ">=7.2",
     "composer/installers": "^1.7",
     "filp/whoops": "^2.5",
     "myclabs/deep-copy": "^1.8",
     "respect/validation": "^1.1",
     "twig/twig": "^2.0",
-    "webtheory/backalley": "^0.7.2"
+    "webtheory/leonidas": "^0.8.3"
   },
 
   "autoload": {
@@ -27,12 +27,13 @@
   },
 
   "autoload-dev": {
-    "files": ["test/start.php"]
+    "files": ["tests/acceptance/bootstrap.php"]
   },
 
   "extra": {
     "installer-paths": {
-      "vendor/{$vendor}/{$name}": ["type:wordpress-muplugin", "type:wordpress-plugin"]
+      "../{$name}": ["type:wordpress-muplugin"],
+      "../../plugins/{$name}": ["type:wordpress-plugin"]
     }
   },
 

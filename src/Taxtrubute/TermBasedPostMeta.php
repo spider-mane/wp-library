@@ -2,30 +2,34 @@
 
 namespace WebTheory\Taxtrubute;
 
-use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use WebTheory\Leonidas\Fields\Managers\PostMetaFieldManager;
+use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
+use WebTheory\Saveyour\Request;
 
 class TermBasedPostMeta extends PostMetaFieldManager implements FieldDataManagerInterface
 {
     /**
-     *
+     * The term used as attribute key
+     * 
+     * @var string
      */
     protected $attribute;
 
     /**
-     *
+     * @var string
      */
     protected $taxonomy;
 
     /**
-     *
+     * @var string
      */
     protected $deleteButton;
 
     /**
      *
      */
-    public function __construct($metaKey, $taxonomy, $attrubute)
+    public function __construct(string $metaKey, string $taxonomy, string $attrubute)
     {
         $this->metaKey = $metaKey;
         $this->taxonomy = $taxonomy;
@@ -57,30 +61,6 @@ class TermBasedPostMeta extends PostMetaFieldManager implements FieldDataManager
     }
 
     /**
-     * Get the value of term
-     *
-     * @return mixed
-     */
-    public function getTerm()
-    {
-        return $this->term;
-    }
-
-    /**
-     * Set the value of term
-     *
-     * @param mixed $term
-     *
-     * @return self
-     */
-    public function setTerm($term)
-    {
-        $this->term = $term;
-
-        return $this;
-    }
-
-    /**
      * Get the value of deleteButton
      *
      * @return mixed
@@ -97,7 +77,7 @@ class TermBasedPostMeta extends PostMetaFieldManager implements FieldDataManager
      *
      * @return self
      */
-    public function setDeleteButton($deleteButton)
+    public function setDeleteButton(string $deleteButton)
     {
         $this->deleteButton = $deleteButton;
 
@@ -107,17 +87,20 @@ class TermBasedPostMeta extends PostMetaFieldManager implements FieldDataManager
     /**
      *
      */
-    public function handleSubmittedData($post, $data): bool
+    public function handleSubmittedData(ServerRequestInterface $request, $data): bool
     {
+        $post = $request->getAttribute('post');
         $response = false;
 
-        if (isset($this->deleteButton) && filter_has_var(INPUT_POST, $this->deleteButton)) {
+        switch (true) {
+            case isset($this->deleteButton) && Request::has($request, $this->deleteButton):
+                $this->deleteData($post);
+                $response = true;
+                break;
 
-            $this->deleteData($post);
-            $response = true;
-        } elseif (has_term($this->attribute, $this->taxonomy, $post->ID)) {
-
-            $response = $this->getCurrentData($post, $data);
+            case has_term($this->attribute, $this->taxonomy, $post->ID):
+                $response = parent::handleSubmittedData($request, $data);
+                break;
         }
 
         return $response;
