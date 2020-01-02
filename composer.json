@@ -22,8 +22,7 @@
   "autoload": {
     "psr-4": {
       "WebTheory\\": "src/"
-    },
-    "files": ["wp-library.php"]
+    }
   },
 
   "autoload-dev": {
