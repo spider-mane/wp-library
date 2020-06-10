@@ -3,12 +3,12 @@
   "description": "Leonidas based module library for WordPress",
   "type": "wordpress-muplugin",
   "license": "GPL-3.0-or-later",
-
-  "authors": [{
-    "name": "Chris Williams",
-    "email": "spider.mane.web@gmail.com"
-  }],
-
+  "authors": [
+    {
+      "name": "Chris Williams",
+      "email": "spider.mane.web@gmail.com"
+    }
+  ],
   "require": {
     "php": ">=7.2",
     "composer/installers": "^1.7",
@@ -16,26 +16,28 @@
     "myclabs/deep-copy": "^1.8",
     "respect/validation": "^1.1",
     "twig/twig": "^2.0",
-    "webtheory/leonidas": "^0.8.3"
+    "webtheory/leonidas": "^0.9.0"
   },
-
   "autoload": {
     "psr-4": {
       "WebTheory\\": "src/"
     }
   },
-
   "autoload-dev": {
-    "files": ["tests/acceptance/bootstrap.php"]
+    "files": [
+      "tests/acceptance/bootstrap.php"
+    ]
   },
-
   "extra": {
     "installer-paths": {
-      "../{$name}": ["type:wordpress-muplugin"],
-      "../../plugins/{$name}": ["type:wordpress-plugin"]
+      "../{$name}": [
+        "type:wordpress-muplugin"
+      ],
+      "../../plugins/{$name}": [
+        "type:wordpress-plugin"
+      ]
     }
   },
-
   "config": {
     "sort-packages": true
   }

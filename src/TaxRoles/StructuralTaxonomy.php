@@ -1,22 +1,20 @@
 <?php
 
-/**
- * @package Backalley-Core
- */
-
 namespace WebTheory\TaxRoles;
 
 use Psr\Http\Message\ServerRequestInterface;
+use WebTheory\Leonidas\Auth\Nonce;
 use WebTheory\Leonidas\Fields\WpAdminField;
 use WebTheory\Leonidas\Forms\Controllers\TermFieldFormSubmissionManager;
 use WebTheory\Leonidas\Term\Field as TermField;
+use WebTheory\Leonidas\Term\FieldLoader as TermFieldLoader;
 use WebTheory\Saveyour\Fields\Select;
 use WebTheory\Saveyour\Managers\FieldDataManagerCallback;
 
 class StructuralTaxonomy
 {
     /**
-     *
+     * @var string
      */
     protected $taxonomy;
 
@@ -28,12 +26,7 @@ class StructuralTaxonomy
     /**
      *
      */
-    protected $roles_data;
-
-    /**
-     *
-     */
-    protected $select_options;
+    protected $rolesData;
 
     /**
      * role that signifies a term as being of the lowest possible ranking
@@ -46,52 +39,87 @@ class StructuralTaxonomy
     protected $sovereign;
 
     /**
-     *
+     * @var Nonce
      */
-    protected static $post_var = 'backalley_hierarchy_role';
+    protected static $nonce;
+
+    /**
+     * @var string[]
+     */
+    protected static $taxonomies = [];
 
     /**
      *
      */
-    protected static $wp_option = 'ba_structural_term_roles';
+    protected const REQUEST_VAR = 'wts_hierarchy_role';
 
     /**
      *
      */
-    public function __construct($taxonomy, $args = null)
+    protected const WP_OPTION = 'wts_structural_term_roles';
+
+    /**
+     *
+     */
+    public function __construct(string $taxonomy, array $roles, string $sovereign, string $baronesque)
     {
-        $this->taxonomy = $taxonomy;
-        $this->roles = $args['roles'];
-        $this->sovereign = $args['top'];
-        $this->baronesque = $args['bottom'];
+        static::init();
 
-        $this->set_roles_data();
-        $this->add_term_field();
+        $this->taxonomy = $taxonomy;
+        $this->roles = $roles;
+        $this->sovereign = $sovereign;
+        $this->baronesque = $baronesque;
+
+        $this->setRolesData();
+        $this->addTermField();
+        $this->addTaxonomy();
     }
 
     /**
      *
      */
-    public function add_term_field()
+    protected function addTaxonomy()
     {
-        $this->set_select_options();
+        if (!in_array($this->taxonomy, static::$taxonomies)) {
+            static::$taxonomies[] = $this->taxonomy;
+            $this->outputNonce();
+        }
+    }
 
+    /**
+     *
+     */
+    protected function outputNonce()
+    {
+        (new TermFieldLoader($this->taxonomy))
+            ->setNonce(static::$nonce)
+            ->hook();
+    }
+
+    /**
+     *
+     */
+    public function addTermField()
+    {
         $select = (new Select)
             ->setId('backalley--hierarchy-role')
-            ->setOptions($this->select_options);
+            ->setOptions($this->getSelectOptions());
 
-        $manager = new FieldDataManagerCallback([$this, 'get_term_role'], [$this, 'update_term_roles']);
+        $dataManager = new FieldDataManagerCallback([$this, 'getTermRole'], [$this, 'updateTermRoles']);
 
-        $controller = (new WpAdminField(static::$post_var, $select, $manager))
+        $controller = (new WpAdminField(static::REQUEST_VAR, $select, $dataManager))
             ->addFilter('sanitize_text_field');
 
-        $formManager = (new TermFieldFormSubmissionManager($this->taxonomy->name))
+        $field = (new TermField($controller))
+            ->setLabel('Hierarchy Role')
+            ->setDescription('Define a purpose for this term within the hierarchy');
+
+        (new TermFieldFormSubmissionManager($this->taxonomy))
+            ->setNonce(static::$nonce)
             ->addField($controller)
             ->hook();
 
-        $field = (new TermField($this->taxonomy->name, $controller))
-            ->setLabel('Hierarchy Role')
-            ->setDescription('Define a purpose for this term within the hierarchy')
+        (new TermFieldLoader($this->taxonomy, $field))
             ->hook();
 
         return $this;
@@ -100,36 +128,34 @@ class StructuralTaxonomy
     /**
      *
      */
-    protected function set_select_options()
+    protected function getSelectOptions()
     {
         $options = ['' => 'Select Role'];
 
-        foreach ($this->roles_data as $role) {
+        foreach ($this->rolesData as $role) {
             $options[$role['name']] = $role['title'];
         }
 
-        $this->select_options = $options;
-
-        return $this;
+        return $options;
     }
 
     /**
      *
      */
-    public function set_roles_data()
+    public function setRolesData()
     {
-        foreach ($this->roles as $new_role => $title) {
+        foreach ($this->roles as $role => $title) {
 
-            $new_role_row = [
-                'name' => sanitize_key($new_role),
+            $roleRow = [
+                'name' => sanitize_key($role),
                 'title' => $title,
                 'terms' => [],
-                'taxonomy' => $this->taxonomy->name,
-                'sovereign' => $new_role === $this->sovereign ? true : false,
-                'baronesque' => $new_role === $this->baronesque ? true : false,
+                'taxonomy' => $this->taxonomy,
+                'sovereign' => $role === $this->sovereign ? true : false,
+                'baronesque' => $role === $this->baronesque ? true : false,
             ];
 
-            $this->roles_data[] = $new_role_row;
+            $this->rolesData[] = $roleRow;
         }
 
         return $this;
@@ -138,19 +164,19 @@ class StructuralTaxonomy
     /**
      *
      */
-    public function update_term_roles(ServerRequestInterface $request, $term_role)
+    public function updateTermRoles(ServerRequestInterface $request, $term_role)
     {
         $term = $request->getAttribute('term', null);
-        $roles = get_option($this::$wp_option, []);
-        $prev_role = $this::get_term_role($request, $this->taxonomy->name);
+        $roles = get_option(static::WP_OPTION, []);
+        $prevRole = $this->getTermRole($request, $this->taxonomy);
 
-        if ($prev_role === $term_role) {
+        if ($prevRole === $term_role) {
             return false;
         }
 
         foreach ($roles as &$role) {
 
-            if ($prev_role === $role['name']) {
+            if ($prevRole === $role['name']) {
                 $index = array_search($term->term_id, $role['terms']);
                 unset($role['terms'][$index]);
             }
@@ -163,7 +189,7 @@ class StructuralTaxonomy
 
         if (!isset($found)) {
 
-            foreach ($this->roles_data as $new_row) {
+            foreach ($this->rolesData as $new_row) {
                 if ($new_row['name'] === $term_role) {
 
                     $new_row['terms'][] = $term->term_id;
@@ -173,13 +199,13 @@ class StructuralTaxonomy
             }
         }
 
-        return update_option($this::$wp_option, $roles, false);
+        return update_option(static::WP_OPTION, $roles, false);
     }
 
     /**
      *
      */
-    public function get_term_role(ServerRequestInterface $request)
+    public function getTermRole(ServerRequestInterface $request)
     {
         $term = $request->getAttribute('term', null);
 
@@ -187,7 +213,7 @@ class StructuralTaxonomy
             return;
         }
 
-        $roles = get_option(Self::$wp_option, []);
+        $roles = get_option(static::WP_OPTION, []);
 
         foreach ($roles as $role) {
             if ($role['taxonomy'] !== $term->taxonomy) {
@@ -209,16 +235,33 @@ class StructuralTaxonomy
     /**
      *
      */
-    public static function get_role_terms($role, $taxonomy)
+    protected static function init()
     {
-        $roles = get_option(Self::$wp_option, []);
+        static $initiated;
 
-        foreach ($roles as $possible_role) {
-            if ($possible_role['taxonomy'] !== $taxonomy) {
+        if (!isset($initiated)) {
+            static::$nonce = new Nonce(
+                'wts-structural-taxonomy-nonce',
+                'wts-update-structural-taxonomy-value'
+            );
+
+            $initiated = true;
+        }
+    }
+
+    /**
+     *
+     */
+    public static function getRoleTerms($role, $taxonomy)
+    {
+        $roles = get_option(static::WP_OPTION, []);
+
+        foreach ($roles as $possibleRole) {
+            if ($possibleRole['taxonomy'] !== $taxonomy) {
                 continue;
             }
 
-            if ($possible_role['name'] === $role) {
+            if ($possibleRole['name'] === $role) {
                 $terms = $role['terms'];
             }
         }

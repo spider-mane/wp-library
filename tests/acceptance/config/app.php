@@ -16,7 +16,7 @@ return [
     'option_handlers' => [
         'post_type' => [
             'sort_by_term' => SortByTermPostTypeArg::class,
-            'somewhat_relatable_to' => SomewhatRelatableToPostTypeArg::class,
+            'relationships' => SomewhatRelatableToPostTypeArg::class,
         ],
 
         'taxonomy' => [

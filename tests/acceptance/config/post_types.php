@@ -87,7 +87,10 @@ return [
         ],
 
         "options" => [
-            "somewhat_relatable_to" => ["ba_menu_item"]
+            "relationships" => [[
+                'name' => 'wts-location->menu',
+                'relatable_to' => 'ba_menu_item'
+            ]]
         ]
     ],
 

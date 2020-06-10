@@ -246,7 +246,7 @@ class SortablePostsInTerm extends SortableObjectsBase
     {
         Self::$admin_page_slug = $menu_slug ?? 'ba_sort_posts';
 
-        add_menu_page(null, null, 'manage_options', Self::$admin_page_slug, [__class__, 'load_admin_page']);
+        add_menu_page(null, null, 'manage_options', Self::$admin_page_slug, [static::class, 'load_admin_page']);
         remove_menu_page(Self::$admin_page_slug);
     }
 

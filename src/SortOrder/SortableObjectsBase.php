@@ -8,7 +8,6 @@ namespace WebTheory\SortOrder;
 
 use function WebTheory\GuctilityBelt\sort_objects_array;
 use function WebTheory\Leonidas\Helpers\infer_object_properties;
-use function WebTheory\Leonidas\Helpers\sort_objects_by_meta;
 
 abstract class SortableObjectsBase
 {
@@ -42,9 +41,6 @@ abstract class SortableObjectsBase
 
         $apex_objects = sort_objects_array($apex_objects, $apex_order, $object_id);
         $hierarchy_objects = sort_objects_array($hierarchy_objects, $hierarchy_order, $object_id);
-
-        // $apex_objects = sort_objects_by_meta($apex_objects, $object_type, $orderby_apex);
-        // $hierarchy_objects = sort_objects_by_meta($hierarchy_objects, $object_type, $orderby_hierarchy);
 
         return array_merge($apex_objects, $hierarchy_objects);
     }
