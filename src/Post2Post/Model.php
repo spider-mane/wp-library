@@ -4,7 +4,9 @@ namespace WebTheory\Post2Post;
 
 use WP_Post;
 use WP_Post_Type;
+use WP_Query;
 use WP_Taxonomy;
+use WP_Term_Query;
 use WebTheory\Leonidas\Taxonomy\Taxonomy;
 use WebTheory\Post2Post\Exceptions\InvalidContextArgumentException;
 
@@ -132,10 +134,25 @@ class Model
      */
     protected function getRelatablePostRelationships(WP_Post $post)
     {
-        return get_posts([
+        return $this->getRelatablePostRelationshipsQuery($post)->get_posts();
+    }
+
+    /**
+     *
+     */
+    protected function getRelatedPostRelationships(WP_Post $post)
+    {
+        return $this->getRelatedPostRelationshipsQuery($post)->get_posts();
+    }
+
+    /**
+     *
+     */
+    public function getRelatablePostRelationshipsQuery(WP_Post $post): WP_Query
+    {
+        return new WP_Query([
             'post_type' => $this->getRelatedPostTypeName(),
             'posts_per_page' => -1,
-            'suppress_filters' => false,
             'tax_query' => [[
                 'taxonomy' => $this->getShadowTaxonomyName(),
                 'terms' => (string) $post->ID,
@@ -148,22 +165,26 @@ class Model
     /**
      *
      */
-    protected function getRelatedPostRelationships(WP_Post $post)
+    public function getRelatedPostRelationshipsQuery(WP_Post $post): WP_Query
     {
-        $postIds = get_terms([
+        $postIds = new WP_Term_Query([
             'taxonomy' => $this->getShadowTaxonomyName(),
             'fields' => 'ids',
             'object_ids' => $post->ID,
             'hierarchical' => false,
         ]);
 
-        return !$postIds ? [] : get_posts([
+        // exit(var_dump($postIds->get_terms() ?: PHP_INT_MAX));
+
+        $query =  new WP_Query([
             'post_type' => $this->getRelatablePostTypeName(),
-            'post_in' => $postIds,
+            'post_in' => $postIds->get_terms(),
             'posts_per_page' => -1,
             'orderby' => 'name',
             'order' => 'ASC',
         ]);
+
+        exit(var_dump($query->get_posts()));
     }
 
     /**

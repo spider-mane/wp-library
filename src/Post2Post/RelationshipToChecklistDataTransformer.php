@@ -3,6 +3,7 @@
 namespace WebTheory\Post2Post;
 
 use WP_Post;
+use WP_Query;
 use WebTheory\Saveyour\Contracts\DataTransformerInterface;
 
 class RelationshipToChecklistDataTransformer implements DataTransformerInterface
@@ -24,16 +25,24 @@ class RelationshipToChecklistDataTransformer implements DataTransformerInterface
      */
     public function reverseTransform($posts)
     {
-        $relationships = [];
+        $relatedPosts = [];
 
         foreach ($posts as $post => $selected) {
             if ($selected) {
-                $relationships['set'][] = (string) $post;
-            } else {
-                $relationships['unset'][] = (string) $post;
+                $relatedPosts[] = $post;
             }
         }
 
-        return $relationships;
+        if (!empty($relatedPosts)) {
+            $query = new WP_Query([
+                'post_type' => 'any',
+                'post__in' => $relatedPosts,
+                'posts_per_page' => -1
+            ]);
+
+            $relatedPosts = $query->get_posts();
+        }
+
+        return $relatedPosts;
     }
 }

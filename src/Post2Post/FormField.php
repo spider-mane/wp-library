@@ -3,7 +3,6 @@
 namespace WebTheory\Post2Post;
 
 use Respect\Validation\Validator;
-use WP_Post;
 use WebTheory\Leonidas\Fields\WpAdminField;
 use WebTheory\Saveyour\Fields\Checklist;
 
@@ -12,7 +11,7 @@ class FormField extends WpAdminField
     use HasContextArgumentTrait;
 
     /**
-     * @var Model
+     * @var Relationship
      */
     protected $relationship;
 
@@ -24,14 +23,16 @@ class FormField extends WpAdminField
     /**
      * @var array
      */
-    protected $options = [];
+    protected $options = [
+        'id' => 'wts--checklist'
+    ];
 
     /**
      *
      */
-    public function __construct(string $requestVar, string $context, Model $relationship, array $options = null)
+    public function __construct(string $requestVar, string $context, Relationship $relationship, ?array $options = null)
     {
-        $this->context = $this->throwExceptionIfInvalidContext($context);
+        $this->context = $this->throwExceptionIfInvalidContext($context, $relationship);
         $this->relationship = $relationship;
         $options && $this->options = $options;
 
@@ -59,33 +60,14 @@ class FormField extends WpAdminField
      */
     protected function createFormField()
     {
-        $posts = $this->relationship->getPostsFor($this->context);
-        $items = $this->getChecklistItemsFromPosts($posts);
+        $query = $this->relationship->getRelatedPostTypePostsQuery($this->context);
+        $items = new PostChecklistItems($query);
 
         return (new Checklist)
-            ->setId("wts--{$this->relationship->getName()}--checklist")
-            ->setItems($items)
+            ->setItems($items->getSelection())
             ->setToggleControl('0')
+            ->setId($this->options['id'])
             ->addClass('thing');
-    }
-
-    /**
-     * @param WP_Post[] $posts
-     */
-    protected function getChecklistItemsFromPosts($posts)
-    {
-        $items = [];
-
-        foreach ($posts as $post) {
-            $items[$post->post_name] = [
-                'value' => '1',
-                'label' => $post->post_title,
-                'name' => (string) $post->ID,
-                'id' => "wts--{$post->post_name}",
-            ];
-        }
-
-        return $items;
     }
 
     /**
@@ -101,6 +83,6 @@ class FormField extends WpAdminField
      */
     protected function createDataTransformer()
     {
-        return new PostsToChecklistDataTransformer();
+        return new RelationshipToChecklistDataTransformer();
     }
 }

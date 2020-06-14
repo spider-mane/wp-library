@@ -11,14 +11,14 @@ class TermRelatedPostsManager implements FieldDataManagerInterface
     /**
      * The somewhat relatable post types object
      *
-     * @var Model $relationship
+     * @var Relationship $relationship
      */
     protected $relationship;
 
     /**
      *
      */
-    public function __construct(Model $relationship)
+    public function __construct(Relationship $relationship)
     {
         $this->relationship = $relationship;
     }
@@ -26,49 +26,30 @@ class TermRelatedPostsManager implements FieldDataManagerInterface
     /**
      *
      */
+    protected function getPost(ServerRequestInterface $request)
+    {
+        return $request->getAttribute('post') ?? get_post();
+    }
+
+    /**
+     *
+     */
     public function getCurrentData(ServerRequestInterface $request)
     {
-        return $this->relationship->getRelatedPosts($request->getAttribute('post'));
+        return $this->relationship->getRelatedPosts($this->getPost($request));
     }
 
     /**
-     *
+     * @param WP_Post[] $relatedPosts
      */
-    public function handleSubmittedData(ServerRequestInterface $request, $posts): bool
+    public function handleSubmittedData(ServerRequestInterface $request, $relatedPosts): bool
     {
-        $post = $request->getAttribute('post');
-        $old = $this->relationship->getRelatedPosts($post);
+        $post = $this->getPost($request);
+        $old = new PostCollection(...$this->relationship->getRelatedPosts($post));
+        $new = new PostCollection(...$relatedPosts);
 
-        if (isset($posts['set'])) {
-            $this->relationship->setPostRelationships($post, ...$posts['set']);
-        }
+        $this->relationship->setPostRelationships($post, ...$relatedPosts);
 
-        if (isset($posts['unset'])) {
-            $this->relationship->unsetPostRelationships($post, ...$posts['unset']);
-        }
-
-        $new = $this->relationship->getRelatedPosts($post);
-
-        return $this->relationshipsUpdated($old, $new);
-    }
-
-    /**
-     *
-     */
-    protected function relationshipsUpdated(array $array1, array $array2): bool
-    {
-        $diff = false;
-
-        if (!empty($array1)) {
-            $cb = function (WP_Post $post1, WP_Post $post2) {
-                return $post1->ID - $post2->ID;
-            };
-
-            $diff = (bool) array_udiff($array1, $array2, $cb);
-        } elseif (count($array1) !== count($array2)) {
-            $diff = true;
-        }
-
-        return $diff;
+        return $old->isDiff($new);
     }
 }

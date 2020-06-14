@@ -8,7 +8,13 @@ use Whoops\Run;
 ################################################################################
 # error handling
 ################################################################################
-(new Run)->prependHandler(new PrettyPageHandler)->register(); // error handling with whoops
+
+// add_action('init', function () {
+//     (new Run)->prependHandler(new PrettyPageHandler)->register(); // error handling with whoops
+// });
+
+// wp_delete_term(2, '&shadow->ba_location');
+// wp_delete_term(3, '&shadow->ba_menu_item');
 
 ################################################################################
 # register models

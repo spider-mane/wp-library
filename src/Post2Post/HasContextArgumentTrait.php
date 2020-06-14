@@ -9,10 +9,10 @@ trait HasContextArgumentTrait
     /**
      *
      */
-    protected function throwExceptionIfInvalidContext(string $context)
+    protected function throwExceptionIfInvalidContext(string $context, PostRelationshipInterfaceInterface $relationship)
     {
-        if ('related' !== $context && 'relatable' !== $context) {
-            throw new InvalidContextArgumentException();
+        if (!in_array($context, $relationship->getPostTypes())) {
+            throw new InvalidContextArgumentException($context);
         }
 
         return $context;

@@ -5,6 +5,47 @@ return [
     /**
      *
      */
+    "ba_location" => [
+
+        "can_export" => true,
+        "capability_type" => "post",
+        "exclude_from_search" => false,
+        "has_archive" => true,
+        "hierarchical" => false,
+        "menu_icon" => "dashicons-location-alt",
+        "menu_position" => 5,
+        "public" => true,
+        "publicly_queryable" => true,
+        "show_in_admin_bar" => true,
+        "show_in_menu" => true,
+        "show_in_nav_menus" => true,
+        "show_in_rest" => true,
+        "show_ui" => true,
+        "supports" => ["title", "thumbnail"],
+
+        "labels" => [
+            "name" => "Locations",
+            "singular_name" => "Location"
+        ],
+
+        "rewrite" => [
+            "slug" => "locations",
+            "with_front" => true,
+            "pages" => true,
+            "feeds" => true
+        ],
+
+        "options" => [
+            // "relationships" => [[
+            //     'name' => 'wts-location->menu',
+            //     'relatable_to' => 'ba_menu_item'
+            // ]]
+        ]
+    ],
+
+    /**
+     *
+     */
     "ba_menu_item" => [
 
         "can_export" => true,
@@ -50,47 +91,6 @@ return [
 
                 "term_row_action" => true
             ]
-        ]
-    ],
-
-    /**
-     *
-     */
-    "ba_location" => [
-
-        "can_export" => true,
-        "capability_type" => "post",
-        "exclude_from_search" => false,
-        "has_archive" => true,
-        "hierarchical" => false,
-        "menu_icon" => "dashicons-location-alt",
-        "menu_position" => 5,
-        "public" => true,
-        "publicly_queryable" => true,
-        "show_in_admin_bar" => true,
-        "show_in_menu" => true,
-        "show_in_nav_menus" => true,
-        "show_in_rest" => true,
-        "show_ui" => true,
-        "supports" => ["title", "thumbnail"],
-
-        "labels" => [
-            "name" => "Locations",
-            "singular_name" => "Location"
-        ],
-
-        "rewrite" => [
-            "slug" => "locations",
-            "with_front" => true,
-            "pages" => true,
-            "feeds" => true
-        ],
-
-        "options" => [
-            "relationships" => [[
-                'name' => 'wts-location->menu',
-                'relatable_to' => 'ba_menu_item'
-            ]]
         ]
     ],
 

@@ -9,13 +9,10 @@ class InvalidContextArgumentException extends InvalidArgumentException
     /**
      *
      */
-    protected $message = '$context must either be "related" or "relatable".';
-
-    /**
-     *
-     */
-    public function __construct()
+    public function __construct(string $context)
     {
-        parent::__construct();
+        $message = "$context is not a valid context for the provided relationship.";
+
+        parent::__construct($message);
     }
 }

@@ -4,12 +4,9 @@ namespace WebTheory\Post2Post;
 
 use WP_Post_Type;
 use WebTheory\Leonidas\PostType\OptionHandlerInterface;
-use WebTheory\Leonidas\Traits\RunsOnWpLoadedTrait;
 
 class SomewhatRelatableToPostTypeArg implements OptionHandlerInterface
 {
-    // use RunsOnWpLoadedTrait;
-
     /**
      * @var string
      */
@@ -38,7 +35,23 @@ class SomewhatRelatableToPostTypeArg implements OptionHandlerInterface
     /**
      *
      */
-    public function run()
+    public function check()
+    {
+        if (post_type_exists($this->relatedPostType)) {
+            $this->create();
+        } else {
+            add_action('registered_post_type', function ($postType) {
+                if ($postType === $this->relatedPostType) {
+                    $this->create();
+                }
+            });
+        }
+    }
+
+    /**
+     *
+     */
+    public function create()
     {
         $model = new Model(
             $this->name,
@@ -61,7 +74,7 @@ class SomewhatRelatableToPostTypeArg implements OptionHandlerInterface
                 $relationship['relatable_to']
             );
 
-            $instance->run();
+            $instance->check();
         }
     }
 
