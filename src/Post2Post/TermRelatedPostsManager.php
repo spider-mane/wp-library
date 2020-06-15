@@ -18,7 +18,7 @@ class TermRelatedPostsManager implements FieldDataManagerInterface
     /**
      *
      */
-    public function __construct(Relationship $relationship)
+    public function __construct(PostRelationshipInterfaceInterface $relationship)
     {
         $this->relationship = $relationship;
     }

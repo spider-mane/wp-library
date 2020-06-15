@@ -15,9 +15,7 @@ class RelationshipToChecklistDataTransformer implements DataTransformerInterface
      */
     public function transform($posts)
     {
-        return array_map(function (WP_Post $post) {
-            return $post->post_name;
-        }, $posts);
+        return (new PostCollection(...$posts))->getNames();
     }
 
     /**

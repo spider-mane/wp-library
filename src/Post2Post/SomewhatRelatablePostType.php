@@ -2,6 +2,7 @@
 
 namespace WebTheory\Post2Post;
 
+use Closure;
 use WP_Post;
 use WP_Post_Type;
 use WP_Taxonomy;
@@ -142,51 +143,6 @@ class SomewhatRelatablePostType
     /**
      *
      */
-    protected function createShadowTerm(WP_Post $post)
-    {
-        $args = ['slug' => $this->getShadowTermSlug($post)];
-
-        wp_insert_term($this->getShadowTermName($post), $this->getName(), $args);
-
-        $this->updateShadowTermMeta($post);
-    }
-
-    /**
-     *
-     */
-    protected function updateShadowTerm(WP_Post $post)
-    {
-        $term = $this->getPostTerm($post);
-        $args = ['name' => $this->getShadowTermName($post)];
-
-        wp_update_term($term->term_id, $this->getName(), $args);
-
-        $this->updateShadowTermMeta($post);
-    }
-
-    /**
-     *
-     */
-    protected function updateShadowTermMeta(WP_Post $post)
-    {
-        $term = $this->getPostTerm($post);
-
-        update_term_meta($term->term_id, "shadow_term_post_cache", serialize($post));
-    }
-
-    /**
-     *
-     */
-    protected function deleteShadowTerm(WP_Post $post)
-    {
-        $term = $this->getPostTerm($post);
-
-        wp_delete_term($term->term_id, $this->getName());
-    }
-
-    /**
-     *
-     */
     protected function getTermPost(WP_Term $term)
     {
         return get_post($this->getShadowTermPostId($term));
@@ -203,6 +159,37 @@ class SomewhatRelatablePostType
     /**
      *
      */
+    protected function createShadowTerm(WP_Post $post)
+    {
+        $args = ['slug' => $this->getShadowTermSlug($post)];
+
+        wp_insert_term($this->getShadowTermName($post), $this->getName(), $args);
+    }
+
+    /**
+     *
+     */
+    protected function updateShadowTerm(WP_Post $post)
+    {
+        $term = $this->getPostTerm($post);
+        $args = ['name' => $this->getShadowTermName($post)];
+
+        wp_update_term($term->term_id, $this->getName(), $args);
+    }
+
+    /**
+     *
+     */
+    protected function deleteShadowTerm(WP_Post $post)
+    {
+        $term = $this->getPostTerm($post);
+
+        wp_delete_term($term->term_id, $this->getName());
+    }
+
+    /**
+     *
+     */
     protected function shadowTermExists(WP_Post $post): bool
     {
         return (bool) term_exists($this->getShadowTermSlug($post), $this->getName());
@@ -211,11 +198,11 @@ class SomewhatRelatablePostType
     /**
      *
      */
-    protected function shadowTermIsUpdated(WP_Post $post)
+    protected function shadowTermIsUpdated(WP_Term $term): bool
     {
-        $term = $this->getPostTerm($post);
+        $post = $this->getTermPost($term);
 
-        return $term->slug === $post->post_title;
+        return $term->name === $post->post_title;
     }
 
     /**
@@ -254,9 +241,10 @@ class SomewhatRelatablePostType
                 return;
             }
 
-            $post = get_post($postId);
+            $term = get_term_by('term_taxonomy_id', $ttId, $taxonomy);
+            $post = $this->getTermPost($term);
 
-            if (!$this->shadowTermIsUpdated($post)) {
+            if (!$this->shadowTermIsUpdated($term)) {
                 $this->updateShadowTerm($post);
             }
         };

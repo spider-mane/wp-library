@@ -137,7 +137,7 @@ class Relationship implements PostRelationshipInterfaceInterface
             'order' => 'ASC',
             'tax_query' => [[
                 'taxonomy' => $this->getPostTypeShadow($post)->name,
-                'terms' => (string) $post->ID,
+                'terms' => $this->slugifyPost($post),
                 'field' => 'slug',
                 'include_children' => false,
             ]]
@@ -157,14 +157,17 @@ class Relationship implements PostRelationshipInterfaceInterface
         ]);
     }
 
+    protected function slugifyPost(WP_Post $post)
+    {
+        return (string) $post->ID;
+    }
+
     /**
      *
      */
     protected function slugifyPosts(array $posts)
     {
-        return array_map(function (WP_Post $post) {
-            return (string) $post->ID;
-        }, $posts);
+        return array_map([$this, 'slugifyPost'], $posts);
     }
 
     /**

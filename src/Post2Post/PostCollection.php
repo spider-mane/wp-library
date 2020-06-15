@@ -2,6 +2,7 @@
 
 namespace WebTheory\Post2Post;
 
+use Closure;
 use WP_Post;
 use WP_Query;
 
