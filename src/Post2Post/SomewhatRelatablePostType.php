@@ -2,7 +2,6 @@
 
 namespace WebTheory\Post2Post;
 
-use Closure;
 use WP_Post;
 use WP_Post_Type;
 use WP_Taxonomy;
@@ -40,7 +39,7 @@ class SomewhatRelatablePostType
         $this->relatablePostTypes = $relatablePostTypes;
         $this->taxonomy = $this->createShadowTaxonomy();
 
-        $this->shadowPostTypePosts();
+        $this->mapTermsToPosts();
     }
 
     /**
@@ -54,15 +53,7 @@ class SomewhatRelatablePostType
     /**
      *
      */
-    public function addPostType(string $postType)
-    {
-        register_taxonomy_for_object_type($this->getName(), $postType);
-    }
-
-    /**
-     *
-     */
-    protected function getRelatablePostTypeNames()
+    protected function getRelatablePostTypeNames(): array
     {
         return array_map(function (WP_Post_Type $postType) {
             return $postType->name;
@@ -72,7 +63,7 @@ class SomewhatRelatablePostType
     /**
      *
      */
-    protected function createShadowTaxonomy()
+    protected function createShadowTaxonomy(): WP_Taxonomy
     {
         $taxonomy = new Taxonomy($this->getName(), $this->relatablePostTypes);
 
@@ -143,7 +134,7 @@ class SomewhatRelatablePostType
     /**
      *
      */
-    protected function getTermPost(WP_Term $term)
+    protected function getTermPost(WP_Term $term): WP_Post
     {
         return get_post($this->getShadowTermPostId($term));
     }
@@ -151,7 +142,7 @@ class SomewhatRelatablePostType
     /**
      *
      */
-    protected function getPostTerm(WP_Post $post)
+    protected function getPostTerm(WP_Post $post): WP_Term
     {
         return get_term_by('slug', $this->getShadowTermSlug($post), $this->getName());
     }
@@ -159,7 +150,7 @@ class SomewhatRelatablePostType
     /**
      *
      */
-    protected function createShadowTerm(WP_Post $post)
+    protected function createShadowTerm(WP_Post $post): void
     {
         $args = ['slug' => $this->getShadowTermSlug($post)];
 
@@ -169,7 +160,7 @@ class SomewhatRelatablePostType
     /**
      *
      */
-    protected function updateShadowTerm(WP_Post $post)
+    protected function updateShadowTerm(WP_Post $post): void
     {
         $term = $this->getPostTerm($post);
         $args = ['name' => $this->getShadowTermName($post)];
@@ -180,7 +171,7 @@ class SomewhatRelatablePostType
     /**
      *
      */
-    protected function deleteShadowTerm(WP_Post $post)
+    protected function deleteShadowTerm(WP_Post $post): void
     {
         $term = $this->getPostTerm($post);
 
@@ -208,7 +199,7 @@ class SomewhatRelatablePostType
     /**
      *
      */
-    protected function shadowPostTypePosts()
+    protected function mapTermsToPosts(): void
     {
         add_action('delete_post', $this->deleteTermWithPost());
         add_action("added_term_relationship", $this->updateTermOnEntry(), null, 3);
@@ -306,5 +297,13 @@ class SomewhatRelatablePostType
     public static function shadowExists(string $postType): bool
     {
         return taxonomy_exists(static::getShadowName($postType));
+    }
+
+    /**
+     *
+     */
+    public static function buildNewRelationship(string $basePostType, string $relatedPostType)
+    {
+        register_taxonomy_for_object_type(static::getShadowName($basePostType), $relatedPostType);
     }
 }

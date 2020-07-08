@@ -4,10 +4,14 @@ namespace WebTheory\Post2Post;
 
 use Psr\Http\Message\ServerRequestInterface;
 use WP_Post;
+use WebTheory\Leonidas\Traits\ExpectsPostTrait;
+use WebTheory\Leonidas\Util\PostCollection;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 
 class TermRelatedPostsManager implements FieldDataManagerInterface
 {
+    use ExpectsPostTrait;
+
     /**
      * The somewhat relatable post types object
      *
@@ -21,14 +25,6 @@ class TermRelatedPostsManager implements FieldDataManagerInterface
     public function __construct(PostRelationshipInterfaceInterface $relationship)
     {
         $this->relationship = $relationship;
-    }
-
-    /**
-     *
-     */
-    protected function getPost(ServerRequestInterface $request)
-    {
-        return $request->getAttribute('post') ?? get_post();
     }
 
     /**

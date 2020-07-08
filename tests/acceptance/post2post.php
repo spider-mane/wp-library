@@ -4,10 +4,10 @@ use WebTheory\Leonidas\Auth\Nonce;
 use WebTheory\Leonidas\Forms\Controllers\PostMetaBoxFormSubmissionManager;
 use WebTheory\Leonidas\MetaBox\Field;
 use WebTheory\Leonidas\MetaBox\MetaBox;
+use WebTheory\Leonidas\MetaBox\Section;
 use WebTheory\Leonidas\Screen;
 use WebTheory\Post2Post\FormField;
 use WebTheory\Post2Post\Relationship;
-use WebTheory\Post2Post\Repository;
 use WebTheory\Post2Post\SomewhatRelatablePostType;
 
 ################################################################################
@@ -27,14 +27,12 @@ Screen::load('post', ['post_type' => 'ba_location'], function () {
     $nonce = new Nonce('post-2-post-nonce', 'save-thing');
     $relationship = new Relationship($postType, 'ba_menu_item');
 
-    // exit(var_dump($relationship));
-
-    $controller = new FormField('test-thing', $postType, $relationship);
+    $controller = new FormField('test-thing', $relationship, $postType);
     $field = (new Field($controller))->setLabel('Menu Items');
 
-    (new MetaBox('test', 'Test', $postType))
-        ->addContent('menu_items', $field)
+    (new MetaBox('test', 'Post2Post Test', $postType))
         ->setNonce($nonce)
+        ->addContent('menu_items', $field)
         ->hook();
 
     (new PostMetaBoxFormSubmissionManager($postType))
@@ -53,10 +51,10 @@ Screen::load('post', ['post_type' => 'ba_menu_item'], function () {
     $nonce = new Nonce('post-2-post-nonce', 'save-other-thing');
     $relationship = new Relationship($postType, 'ba_location');
 
-    $controller = new FormField('test-thing', $postType, $relationship);
+    $controller = new FormField('test-thing', $relationship, $postType);
     $field = (new Field($controller))->setLabel('Locations Available');
 
-    (new MetaBox('test', 'Test', $postType))
+    (new MetaBox('test', 'Post2Post Test', $postType))
         ->setNonce($nonce)
         ->addContent('locations', $field)
         ->hook();

@@ -6,6 +6,7 @@ use WP_Post;
 use WP_Post_Type;
 use WP_Query;
 use WP_Taxonomy;
+use WebTheory\Leonidas\Util\PostCollection;
 use WebTheory\Post2Post\Exceptions\InvalidPostException;
 use WebTheory\Post2Post\Exceptions\InvalidPostTypeException;
 
@@ -89,7 +90,7 @@ class Relationship implements PostRelationshipInterfaceInterface
     /**
      *
      */
-    protected function getRelatedPostTypeName(string $postType): string
+    public function getRelatedPostTypeName(string $postType): string
     {
         $postType1 = $this->postType1->name;
         $postType2 = $this->postType2->name;
@@ -110,7 +111,7 @@ class Relationship implements PostRelationshipInterfaceInterface
     /**
      *
      */
-    protected function getPostTypeShadow(WP_Post $post)
+    protected function getPostTypeShadow(WP_Post $post): WP_Taxonomy
     {
         switch ($post->post_type) {
 
@@ -128,11 +129,11 @@ class Relationship implements PostRelationshipInterfaceInterface
     /**
      *
      */
-    public function getRelatedPostsQuery(WP_Post $post): WP_Query
+    public function getRelatedPostsQuery(WP_Post $post, int $count = -1): WP_Query
     {
         return new WP_Query([
             'post_type' => $this->getRelatedPostType($post)->name,
-            'posts_per_page' => -1,
+            'posts_per_page' => $count,
             'orderby' => 'name',
             'order' => 'ASC',
             'tax_query' => [[
@@ -157,7 +158,10 @@ class Relationship implements PostRelationshipInterfaceInterface
         ]);
     }
 
-    protected function slugifyPost(WP_Post $post)
+    /**
+     *
+     */
+    protected function slugifyPost(WP_Post $post): string
     {
         return (string) $post->ID;
     }
@@ -165,19 +169,19 @@ class Relationship implements PostRelationshipInterfaceInterface
     /**
      *
      */
-    protected function slugifyPosts(array $posts)
+    protected function slugifyPosts(WP_Post ...$posts): array
     {
         return array_map([$this, 'slugifyPost'], $posts);
     }
 
     /**
-     * ! This method will completely rewrite the given posts relationships to posts of the opposite post type!
+     *
      */
-    protected function defineRelationships(WP_Post $post, WP_Post ...$relatedPosts)
+    protected function defineRelationships(WP_Post $post, WP_Post ...$relatedPosts): void
     {
         wp_set_object_terms(
             $post->ID,
-            $this->slugifyPosts($relatedPosts),
+            $this->slugifyPosts(...$relatedPosts),
             $this->getRelatedPostTypeShadow($post)->name,
             false
         );
@@ -186,11 +190,11 @@ class Relationship implements PostRelationshipInterfaceInterface
     /**
      *
      */
-    protected function extendRelationships(WP_Post $post, WP_Post ...$relatedPosts)
+    protected function extendRelationships(WP_Post $post, WP_Post ...$relatedPosts): void
     {
         wp_set_object_terms(
             $post->ID,
-            $this->slugifyPosts($relatedPosts),
+            $this->slugifyPosts(...$relatedPosts),
             $this->getRelatedPostTypeShadow($post)->name,
             true // ! must be set to true in order to avoid completely rewriting relationships!
         );
@@ -199,36 +203,36 @@ class Relationship implements PostRelationshipInterfaceInterface
     /**
      *
      */
-    protected function removeRelationships(WP_Post $post, WP_Post ...$relatedPosts)
+    protected function removeRelationships(WP_Post $post, WP_Post ...$relatedPosts): void
     {
         wp_remove_object_terms(
             $post->ID,
-            $this->slugifyPosts($relatedPosts),
+            $this->slugifyPosts(...$relatedPosts),
             $this->getRelatedPostTypeShadow($post)->name
         );
     }
 
     /**
-     *
+     * @return WP_Post[]
      */
-    public function getRelatedPosts(WP_Post $post): array
+    public function getRelatedPosts(WP_Post $post, int $count = -1): array
     {
-        return $this->getRelatedPostsQuery($post)->get_posts();
+        return $this->getRelatedPostsQuery($post, $count)->get_posts();
     }
 
     /**
-     *
+     * @return int[]
      */
-    public function getRelatedPostsIds(WP_Post $post)
+    public function getRelatedPostsIds(WP_Post $post, int $count = -1): array
     {
-        $query = $this->getRelatedPostsQuery($post);
+        $query = $this->getRelatedPostsQuery($post, $count);
         $query->set('fields', 'ids');
 
         return $query->get_posts();
     }
 
     /**
-     *
+     * @return WP_Post[]
      */
     public function getRelatedPostTypePosts(string $postType, int $count = -1): array
     {
@@ -236,7 +240,7 @@ class Relationship implements PostRelationshipInterfaceInterface
     }
 
     /**
-     * ! This method will completely rewrite the given posts relationships to posts of the opposite post type!
+     *
      *
      * @param WP_Post $post The post to set the relationships of
      */

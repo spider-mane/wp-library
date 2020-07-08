@@ -1,6 +1,6 @@
 <?php
 
-use WebTheory\Post2Post\Prefixer;
+use WebTheory\Leonidas\Util\Prefixer;
 use WebTheory\Post2Post\SomewhatRelatableToPostTypeArg;
 use WebTheory\Post2Post\TermRelatedPostsManager;
 use WebTheory\SortOrder\SortByTermPostTypeArg;

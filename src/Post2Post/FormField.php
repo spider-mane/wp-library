@@ -3,15 +3,20 @@
 namespace WebTheory\Post2Post;
 
 use Respect\Validation\Validator;
-use WebTheory\Leonidas\Fields\WpAdminField;
+use WebTheory\Leonidas\Fields\Selections\PostQueryChecklistItems;
+use WebTheory\Saveyour\Contracts\DataTransformerInterface;
+use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
+use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
+use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\Controllers\AbstractField;
 use WebTheory\Saveyour\Fields\Checklist;
 
-class FormField extends WpAdminField
+class FormField extends AbstractField implements FormFieldControllerInterface
 {
     use HasContextArgumentTrait;
 
     /**
-     * @var Relationship
+     * @var PostRelationshipInterfaceInterface
      */
     protected $relationship;
 
@@ -23,49 +28,44 @@ class FormField extends WpAdminField
     /**
      * @var array
      */
-    protected $options = [
-        'id' => 'wts--checklist'
-    ];
+    protected $options = [];
 
     /**
      *
      */
-    public function __construct(string $requestVar, string $context, Relationship $relationship, ?array $options = null)
+    public function __construct(string $requestVar, Relationship $relationship, string $context, array $options = [])
     {
-        $this->context = $this->throwExceptionIfInvalidContext($context, $relationship);
         $this->relationship = $relationship;
-        $options && $this->options = $options;
 
-        parent::__construct(
-            $requestVar,
-            $this->createFormField(),
-            $this->createDataManager(),
-            $this->createDataTransformer()
+        $this->context = $this->throwExceptionIfInvalidContext($context, $relationship);
+        $this->options = $this->defineOptions($options);
+
+        parent::__construct($requestVar);
+    }
+
+    /**
+     *
+     */
+    protected function defineOptions(array $options)
+    {
+        $relatedPostsType = $this->relationship->getRelatedPostTypeName($this->context);
+
+        return [
+            'id' => $options['id'] ?? "related-{$relatedPostsType}-checklist"
+        ];
+    }
+
+    /**
+     *
+     */
+    protected function createFormField(): ?FormFieldInterface
+    {
+        $selection = new PostQueryChecklistItems(
+            $this->relationship->getRelatedPostTypePostsQuery($this->context)
         );
 
-        $this->setNonConstructorProperties();
-    }
-
-    /**
-     *
-     */
-    protected function setNonConstructorProperties()
-    {
-        $this->addRule('int', Validator::intVal(), 'A selection is invalid.');
-        $this->setFilters('sanitize_text_field');
-    }
-
-    /**
-     *
-     */
-    protected function createFormField()
-    {
-        $query = $this->relationship->getRelatedPostTypePostsQuery($this->context);
-        $items = new PostChecklistItems($query);
-
         return (new Checklist)
-            ->setItems($items->getSelection())
-            ->setToggleControl('0')
+            ->setSelectionProvider($selection)
             ->setId($this->options['id'])
             ->addClass('thing');
     }
@@ -73,7 +73,7 @@ class FormField extends WpAdminField
     /**
      *
      */
-    public function createDataManager()
+    public function createDataManager(): ?FieldDataManagerInterface
     {
         return new TermRelatedPostsManager($this->relationship);
     }
@@ -81,8 +81,29 @@ class FormField extends WpAdminField
     /**
      *
      */
-    protected function createDataTransformer()
+    protected function createDataTransformer(): ?DataTransformerInterface
     {
         return new RelationshipToChecklistDataTransformer();
+    }
+
+    /**
+     *
+     */
+    protected function defineFilters(): ?array
+    {
+        return ['sanitize_text_field'];
+    }
+
+    /**
+     *
+     */
+    protected function defineRules(): ?array
+    {
+        return [
+            'int' => [
+                'validator' => Validator::intVal(),
+                'alert' => 'A selection is invalid'
+            ]
+        ];
     }
 }

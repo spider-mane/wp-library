@@ -21,7 +21,7 @@ use Whoops\Run;
 ################################################################################
 add_action('init', function () {
 
-    $app = require 'config/app.php';
+    $app = require 'config/base.php';
     $postTypeHandlers = $app['option_handlers']['post_type'];
     $taxonomyHandlers = $app['option_handlers']['taxonomy'];
 

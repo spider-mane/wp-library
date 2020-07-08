@@ -4,6 +4,7 @@ namespace WebTheory\Post2Post;
 
 use WP_Post;
 use WP_Query;
+use WebTheory\Leonidas\Util\PostCollection;
 use WebTheory\Saveyour\Contracts\DataTransformerInterface;
 
 class RelationshipToChecklistDataTransformer implements DataTransformerInterface
@@ -15,7 +16,9 @@ class RelationshipToChecklistDataTransformer implements DataTransformerInterface
      */
     public function transform($posts)
     {
-        return (new PostCollection(...$posts))->getNames();
+        $posts = new PostCollection(...$posts);
+
+        return array_map('strval', $posts->getIds());
     }
 
     /**
@@ -23,24 +26,21 @@ class RelationshipToChecklistDataTransformer implements DataTransformerInterface
      */
     public function reverseTransform($posts)
     {
-        $relatedPosts = [];
-
-        foreach ($posts as $post => $selected) {
-            if ($selected) {
-                $relatedPosts[] = $post;
-            }
+        if (in_array('0', $posts)) {
+            unset($posts[array_search('0', $posts)]);
         }
 
-        if (!empty($relatedPosts)) {
+        if (!empty($posts)) {
             $query = new WP_Query([
                 'post_type' => 'any',
-                'post__in' => $relatedPosts,
-                'posts_per_page' => -1
+                'post__in' => $posts,
+                'posts_per_page' => -1,
+                'suppress_filters' => true,
             ]);
 
-            $relatedPosts = $query->get_posts();
+            $posts = $query->get_posts();
         }
 
-        return $relatedPosts;
+        return $posts;
     }
 }

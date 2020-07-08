@@ -13,24 +13,34 @@ interface PostRelationshipInterfaceInterface
     public function getPostTypes(): array;
 
     /**
-     * @return WP_Post[]
+     *
      */
-    public function getRelatedPosts(WP_Post $post): array;
-
-    /**
-     * @return WP_Query
-     */
-    public function getRelatedPostsQuery(WP_Post $post): WP_Query;
+    public function getRelatedPostTypeName(string $postType): string;
 
     /**
      * @return WP_Post[]
      */
-    public function getRelatedPostTypePosts(string $postType): array;
+    public function getRelatedPosts(WP_Post $post, int $count = -1): array;
+
+    /**
+     * @return int[]
+     */
+    public function getRelatedPostsIds(WP_Post $post, int $count = -1): array;
 
     /**
      * @return WP_Query
      */
-    public function getRelatedPostTypePostsQuery(string $postType): WP_Query;
+    public function getRelatedPostsQuery(WP_Post $post, int $count = -1): WP_Query;
+
+    /**
+     * @return WP_Post[]
+     */
+    public function getRelatedPostTypePosts(string $postType, int $count = -1): array;
+
+    /**
+     * @return WP_Query
+     */
+    public function getRelatedPostTypePostsQuery(string $postType, int $count = -1): WP_Query;
 
     /**
      * @return void
