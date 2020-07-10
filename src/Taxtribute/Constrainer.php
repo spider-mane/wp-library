@@ -3,7 +3,6 @@
 namespace WebTheory\Taxtribute;
 
 use Psr\Http\Message\ServerRequestInterface;
-use WP_Post;
 use WebTheory\Leonidas\Contracts\ComponentConstrainerInterface;
 use WebTheory\Leonidas\Traits\ExpectsPostTrait;
 

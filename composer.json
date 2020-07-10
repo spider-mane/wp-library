@@ -15,7 +15,7 @@
     "filp/whoops": "^2.5",
     "myclabs/deep-copy": "^1.8",
     "twig/twig": "^2.0",
-    "webtheory/leonidas": "^0.9.5"
+    "webtheory/leonidas": "^0.9.6"
   },
   "autoload": {
     "psr-4": {

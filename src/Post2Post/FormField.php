@@ -51,7 +51,8 @@ class FormField extends AbstractField implements FormFieldControllerInterface
         $relatedPostsType = $this->relationship->getRelatedPostTypeName($this->context);
 
         return [
-            'id' => $options['id'] ?? "related-{$relatedPostsType}-checklist"
+            'id' => $options['id'] ?? "related-{$relatedPostsType}-checklist",
+            'class' => $options['class'] ?? []
         ];
     }
 
@@ -60,13 +61,15 @@ class FormField extends AbstractField implements FormFieldControllerInterface
      */
     protected function createFormField(): ?FormFieldInterface
     {
+        $options = $this->options;
         $selection = new PostQueryChecklistItems(
             $this->relationship->getRelatedPostTypePostsQuery($this->context)
         );
 
         return (new Checklist)
-            ->setSelectionProvider($selection)
-            ->setId($this->options['id'])
+            ->setChecklistItemProvider($selection)
+            ->setId($options['id'])
+            ->setClasslist($options['class'])
             ->addClass('thing');
     }
 
