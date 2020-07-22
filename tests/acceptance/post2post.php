@@ -4,7 +4,6 @@ use WebTheory\Leonidas\Auth\Nonce;
 use WebTheory\Leonidas\Forms\Controllers\PostMetaBoxFormSubmissionManager;
 use WebTheory\Leonidas\MetaBox\Field;
 use WebTheory\Leonidas\MetaBox\MetaBox;
-use WebTheory\Leonidas\MetaBox\Section;
 use WebTheory\Leonidas\Screen;
 use WebTheory\Post2Post\FormField;
 use WebTheory\Post2Post\Relationship;
