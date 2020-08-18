@@ -2,7 +2,7 @@
 
 use WebTheory\Leonidas\Util\Prefixer;
 use WebTheory\Post2Post\SomewhatRelatableToPostTypeArg;
-use WebTheory\Post2Post\TermRelatedPostsManager;
+use WebTheory\Post2Post\PostRelationshipDataManager;
 use WebTheory\SortOrder\SortByTermPostTypeArg;
 use WebTheory\SortOrder\SortableTaxonomyArg;
 use WebTheory\TaxRoles\StructuralTaxonomyArg;
@@ -14,7 +14,7 @@ $_ = [$prefix, 'underscore'];
 return [
     'data_managers' => [
         'term_based_post_meta' => TermBasedPostMeta::class,
-        'term_related_posts' => TermRelatedPostsManager::class,
+        'term_related_posts' => PostRelationshipDataManager::class,
     ],
 
     'option_handlers' => [

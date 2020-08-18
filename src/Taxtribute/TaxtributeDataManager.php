@@ -6,12 +6,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use WebTheory\Leonidas\Traits\ExpectsPostTrait;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 
-class TermBasedPostMeta implements FieldDataManagerInterface
+class TaxtributeDataManager implements FieldDataManagerInterface
 {
     use ExpectsPostTrait;
 
     /**
-     * @var Model
+     * @var Taxtribute
      */
     protected $model;
 
@@ -23,7 +23,7 @@ class TermBasedPostMeta implements FieldDataManagerInterface
     /**
      *
      */
-    public function __construct(string $attribute, Model $model)
+    public function __construct(string $attribute, Taxtribute $model)
     {
         $this->attribute = $attribute;
         $this->model = $model;

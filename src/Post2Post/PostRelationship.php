@@ -10,7 +10,7 @@ use WebTheory\Leonidas\Util\PostCollection;
 use WebTheory\Post2Post\Exceptions\InvalidPostException;
 use WebTheory\Post2Post\Exceptions\InvalidPostTypeException;
 
-class Relationship implements PostRelationshipInterfaceInterface
+class PostRelationship implements PostRelationshipInterfaceInterface
 {
     /**
      * @var WP_Post_Type

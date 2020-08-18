@@ -8,14 +8,14 @@ use WebTheory\Leonidas\Traits\ExpectsPostTrait;
 use WebTheory\Leonidas\Util\PostCollection;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 
-class TermRelatedPostsManager implements FieldDataManagerInterface
+class PostRelationshipDataManager implements FieldDataManagerInterface
 {
     use ExpectsPostTrait;
 
     /**
      * The somewhat relatable post types object
      *
-     * @var Relationship $relationship
+     * @var PostRelationship $relationship
      */
     protected $relationship;
 

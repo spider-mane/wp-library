@@ -10,9 +10,9 @@ use WebTheory\Leonidas\MetaBox\Section;
 use WebTheory\Leonidas\Screen;
 use WebTheory\Saveyour\Controllers\FormFieldControllerBuilder;
 use WebTheory\Saveyour\Fields\Url;
-use WebTheory\Taxtribute\Constrainer;
-use WebTheory\Taxtribute\Model;
-use WebTheory\Taxtribute\TermBasedPostMeta;
+use WebTheory\Taxtribute\TaxtributeConstrainer;
+use WebTheory\Taxtribute\Taxtribute;
+use WebTheory\Taxtribute\TaxtributeDataManager;
 
 Screen::load('post', ['post_type' => 'ba_location'], function () {
     // exit(var_dump($_POST));
@@ -24,7 +24,7 @@ Screen::load('post', ['post_type' => 'ba_location'], function () {
     $taxonomy = 'ba_delivery_platforms';
     $taxName = get_taxonomy($taxonomy)->labels->name;
 
-    $taxtribute = new Model($taxonomy);
+    $taxtribute = new Taxtribute($taxonomy);
     $nonce = new Nonce('taxtribute-nonce', 'save-taxtributes');
 
     $metabox = (new MetaBox('taxtribute-metabox', 'Taxtribute Test', $postType))
@@ -57,7 +57,7 @@ Screen::load('post', ['post_type' => 'ba_location'], function () {
         $attribute = $attribute->slug;
 
         $field = (new Url)->addClass('large-text');
-        $dataManager = new TermBasedPostMeta($attribute, $taxtribute);
+        $dataManager = new TaxtributeDataManager($attribute, $taxtribute);
 
         $controller = (new FormFieldControllerBuilder)
             ->setRequestVar($taxtribute->getMetaKey($name))
@@ -70,7 +70,7 @@ Screen::load('post', ['post_type' => 'ba_location'], function () {
         $field = (new Field($controller))
             ->setRowPadding(1)
             ->setLabel($name)
-            ->setConstraints(new Constrainer($attribute, $taxtribute));
+            ->setConstraints(new TaxtributeConstrainer($attribute, $taxtribute));
 
         $manager->addField($controller);
         $section->addContent($attribute, $field);

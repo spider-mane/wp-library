@@ -78,14 +78,14 @@ class SomewhatRelatablePostType
         //     'hierarchical' => false,
         // ]);
 
-        $capabilities = [
+        $taxonomy->setCapabilities([
             'manage_terms' => 'edit_posts',
             'edit_terms' => 'edit_posts',
             'delete_terms' => 'edit_posts',
             'assign_terms' => 'edit_posts'
-        ];
+        ]);
 
-        $description = "DO NOT ADD TERMS DIRECTLY!. This taxonomy shadows the post type \"{$this->postType->name}\" in order to facilitate relationships between its own posts and those of other post types.";
+        $taxonomy->setDescription("DO NOT ADD TERMS DIRECTLY!. This taxonomy shadows the post type \"{$this->postType->name}\" in order to facilitate relationships between its own posts and those of other post types by maintaining parity between each term and its corresponding post.");
 
         $taxonomy->setArgs([
             'hierarchical' => false,
@@ -100,8 +100,6 @@ class SomewhatRelatablePostType
             'show_in_rest' => true,
             'show_in_quick_edit' => false,
             'show_tagcloud' => true,
-            'capabilities' => $capabilities,
-            'description' => $description,
         ]);
 
         return $taxonomy->register()->getRegisteredTaxonomy();

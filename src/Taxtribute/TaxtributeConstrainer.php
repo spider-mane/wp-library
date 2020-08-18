@@ -6,7 +6,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use WebTheory\Leonidas\Contracts\ComponentConstrainerInterface;
 use WebTheory\Leonidas\Traits\ExpectsPostTrait;
 
-class Constrainer implements ComponentConstrainerInterface
+class TaxtributeConstrainer implements ComponentConstrainerInterface
 {
     use ExpectsPostTrait;
 
@@ -16,14 +16,14 @@ class Constrainer implements ComponentConstrainerInterface
     protected $attribute;
 
     /**
-     * @var Model
+     * @var Taxtribute
      */
     protected $taxtribute;
 
     /**
      *
      */
-    public function __construct(string $attribute, Model $taxtribute)
+    public function __construct(string $attribute, Taxtribute $taxtribute)
     {
         $this->attribute = $attribute;
         $this->taxtribute = $taxtribute;

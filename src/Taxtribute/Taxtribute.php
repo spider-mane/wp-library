@@ -7,10 +7,8 @@ use WP_Query;
 use WP_Taxonomy;
 use WP_Term;
 use WP_Term_Query;
-use WebTheory\Leonidas\Util\PostCollection;
-use WebTheory\Leonidas\Util\TermCollection;
 
-class Model
+class Taxtribute
 {
     /**
      * @var WP_Taxonomy

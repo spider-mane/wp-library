@@ -5,8 +5,8 @@ use WebTheory\Leonidas\Forms\Controllers\PostMetaBoxFormSubmissionManager;
 use WebTheory\Leonidas\MetaBox\Field;
 use WebTheory\Leonidas\MetaBox\MetaBox;
 use WebTheory\Leonidas\Screen;
-use WebTheory\Post2Post\FormField;
-use WebTheory\Post2Post\Relationship;
+use WebTheory\Post2Post\PostRelationship;
+use WebTheory\Post2Post\PostRelationshipChecklist;
 use WebTheory\Post2Post\SomewhatRelatablePostType;
 
 ################################################################################
@@ -24,9 +24,9 @@ Screen::load('post', ['post_type' => 'ba_location'], function () {
 
     $postType = 'ba_location';
     $nonce = new Nonce('post-2-post-nonce', 'save-thing');
-    $relationship = new Relationship($postType, 'ba_menu_item');
+    $relationship = new PostRelationship($postType, 'ba_menu_item');
 
-    $controller = new FormField('test-thing', $relationship, $postType);
+    $controller = new PostRelationshipChecklist('test-thing', $relationship, $postType);
     $field = (new Field($controller))->setLabel('Menu Items');
 
     (new MetaBox('test', 'Post2Post Test', $postType))
@@ -48,9 +48,9 @@ Screen::load('post', ['post_type' => 'ba_menu_item'], function () {
 
     $postType = 'ba_menu_item';
     $nonce = new Nonce('post-2-post-nonce', 'save-other-thing');
-    $relationship = new Relationship($postType, 'ba_location');
+    $relationship = new PostRelationship($postType, 'ba_location');
 
-    $controller = new FormField('test-thing', $relationship, $postType);
+    $controller = new PostRelationshipChecklist('test-thing', $relationship, $postType);
     $field = (new Field($controller))->setLabel('Locations Available');
 
     (new MetaBox('test', 'Post2Post Test', $postType))
